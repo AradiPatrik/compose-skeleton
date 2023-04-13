@@ -1,0 +1,49 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    kotlin("kapt")
+
+    // Precompiled plugin with the base android configuration.
+    // Declared in buildSrc/.../android-config.gradle.kts.
+    `android-config`
+}
+
+android {
+
+    defaultConfig {
+        applicationId = "com.cardinalblue.skeleton"
+        versionCode = 1
+        versionName = "1.0.0"
+    }
+
+    // ===== compose =====
+    buildFeatures.compose = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = versions.composeCompiler
+    }
+}
+
+dependencies {
+    implementation(project(":common"))
+    implementation(project(":theme"))
+
+    // ===== android =====
+    implementation(libs.android)
+
+    // ===== compose =====
+    implementation(libs.compose)
+
+    // ===== dagger =====
+    implementation(libs.dagger)
+    kapt(libs.daggerCompiler)
+
+    // ===== test =====
+    testImplementation(libs.unitTests)
+    androidTestImplementation(libs.androidTests)
+
+    // ===== debug =====
+    debugImplementation(libs.debug)
+
+    // ===== baseline profiles =====
+    implementation(libs.profileInstaller)
+}
