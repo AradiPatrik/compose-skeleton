@@ -1,21 +1,24 @@
 @file:Suppress("ClassName")
 
 object versions {
-    const val ksp = "1.7.10-1.0.6"
-    const val core = "1.8.0"
-    const val lifecycle = "2.5.1"
+    const val ksp = "1.8.20-1.0.10"
+    const val versionPlugin = "0.46.0"
+    const val core = "1.9.0"
+    const val lifecycle = "2.6.1"
     const val coroutines = "1.6.4"
-    const val composeCompiler = "1.4.2"
-    const val compose = "1.2.1"
-    const val dagger = "2.43.2"
+    const val composeCompiler = "1.4.5"
+    const val compose = "1.4.1"
+    const val dagger = "2.45"
     const val paging = "3.1.1"
     const val pagingCompose = "1.0.0-alpha16"
     const val accompanist = "0.25.1"
     const val retrofit = "2.9.0"
     const val moshi = "1.14.0"
     const val room = "2.4.3"
-    const val mockk = "1.12.5"
+    const val mockk = "1.13.5"
     const val material3 = "1.1.0-beta02"
+    const val activityCompose = "1.7.0"
+    const val navigationCompose = "2.5.3"
 }
 
 object libs {
@@ -24,13 +27,12 @@ object libs {
         "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}"
     )
     val compose = listOf(
-        Bom("androidx.compose:compose-bom:2023.03.00"),
+        Bom("androidx.compose:compose-bom:2023.04.00"),
         "androidx.compose.ui:ui-tooling-preview",
         "androidx.compose.ui:ui-tooling",
         "androidx.compose.material3:material3:${versions.material3}",
-        "androidx.activity:activity-compose:1.5.1",
-        "androidx.navigation:navigation-compose:2.5.1",
-        "io.coil-kt:coil-compose:2.2.0",
+        "androidx.activity:activity-compose:${versions.activityCompose}",
+        "androidx.navigation:navigation-compose:${versions.navigationCompose}",
     )
     val paging = listOf(
         "androidx.paging:paging-runtime-ktx:${versions.paging}",
@@ -76,8 +78,8 @@ object libs {
         "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
     )
     val androidTests = listOf(
-        "androidx.test.ext:junit:1.1.3",
-        "androidx.test.espresso:espresso-core:3.4.0",
+        "androidx.test.ext:junit:1.1.5",
+        "androidx.test.espresso:espresso-core:3.5.1",
         "androidx.compose.ui:ui-test-junit4:${versions.compose}"
     )
     const val uiautomator =
@@ -87,7 +89,7 @@ object libs {
         "androidx.benchmark:benchmark-macro-junit4:1.1.0-beta04"
 
     const val profileInstaller =
-        "androidx.profileinstaller:profileinstaller:1.2.0"
+        "androidx.profileinstaller:profileinstaller:1.3.0"
 
     val debug = listOf(
         "androidx.compose.ui:ui-tooling:${versions.compose}",

@@ -6,6 +6,8 @@ plugins {
 }
 
 android {
+    namespace = "com.cardinalblue.theme"
+
     // ===== compose =====
     buildFeatures.compose = true
     composeOptions {

@@ -27,9 +27,9 @@ class MainActivity : ComponentActivity() {
                             .width(500.dp)
                             .height(500.dp),
                     ) {
+                        Text("Hello World!")
                     }
                 }
-
             }
         }
     }

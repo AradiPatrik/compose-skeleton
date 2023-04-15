@@ -6,6 +6,10 @@ plugins {
     `android-config`
 }
 
+android {
+    namespace = "com.cardinalblue.common"
+}
+
 dependencies {
 
 }

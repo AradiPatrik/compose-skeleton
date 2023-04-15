@@ -9,6 +9,7 @@ plugins {
 }
 
 android {
+    namespace = "com.cardinalblue.skeleton"
 
     defaultConfig {
         applicationId = "com.cardinalblue.skeleton"
