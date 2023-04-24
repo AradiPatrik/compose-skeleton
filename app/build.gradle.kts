@@ -25,8 +25,21 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
-    implementation(project(":theme"))
+    // ===== common =====
+    implementation(
+        theme(),
+        platform(),
+        domain(),
+        navigation(),
+        *data.all()
+    )
+
+    implementation(
+        *movieSearch.all(),
+        *movieDetails.all(),
+        *featuredMovies.all(),
+        *profile.all()
+    )
 
     // ===== android =====
     implementation(libs.android)

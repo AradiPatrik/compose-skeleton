@@ -32,7 +32,10 @@ android {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_17.toString()
             freeCompilerArgs = listOf(
-                "-opt-in=kotlin.RequiresOptIn"
+                "-opt-in=kotlin.RequiresOptIn",
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-opt-in=kotlinx.coroutines.FlowPreview",
+                "-opt-in=androidx.paging.ExperimentalPagingApi"
             )
         }
     }

@@ -3,15 +3,14 @@ package com.cardinalblue.skeleton
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.navigation.compose.rememberNavController
+import com.cardinalblue.api.DataProvider
+import com.cardinalblue.navigation.CompositionLocals
+import com.cardinalblue.navigation.FeatureEntriesProvider
+import com.cardinalblue.platform.PlatformProvider
+import com.cardinalblue.skeleton.navigation.App
 import com.cardinalblue.theme.SkeletonTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,17 +19,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SkeletonTheme {
-                Box(Modifier.padding(16.dp)) {
-                    Card(
-                        Modifier
-                            .align(Center)
-                            .width(500.dp)
-                            .height(500.dp),
-                    ) {
-                        Text("Hello World!")
-                    }
-                }
+                AppWithInitializedProviders()
             }
+        }
+    }
+
+    @Composable
+    private fun AppWithInitializedProviders() {
+        val navController = rememberNavController()
+
+
+        CompositionLocalProvider(
+            CompositionLocals.ofType<DataProvider>() provides application.appProvider,
+            CompositionLocals.ofType<PlatformProvider>() provides application.appProvider,
+            CompositionLocals.ofType<FeatureEntriesProvider>() provides application.appProvider
+        ) {
+            App(navController)
         }
     }
 }

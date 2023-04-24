@@ -1,0 +1,19 @@
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+    kotlin("kapt")
+
+    `android-config`
+}
+
+android {
+    namespace = "com.cardinalblue.platform"
+}
+
+dependencies {
+    implementation(domain())
+    implementation(libs.coroutines)
+
+    implementation(libs.dagger)
+    kapt(libs.daggerCompiler)
+}

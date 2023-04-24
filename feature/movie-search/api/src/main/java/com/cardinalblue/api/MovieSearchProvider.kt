@@ -1,0 +1,3 @@
+package com.cardinalblue.api
+
+interface MovieSearchProvider
