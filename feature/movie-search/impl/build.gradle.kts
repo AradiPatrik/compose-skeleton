@@ -13,7 +13,7 @@ android {
 
 dependencies {
     applyFeatureCommon()
-    implementation(movieSearch.api())
+    implementation(movieSearch.api(), profile.api())
     implementation(libs.compose, libs.coroutines, libs.paging)
 
     implementation(libs.dagger)

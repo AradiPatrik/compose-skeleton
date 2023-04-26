@@ -14,6 +14,14 @@ interface RootComponentHolder<C : Any> {
     fun rootComponent(
         currentEntry: NavBackStackEntry,
         navController: NavHostController,
+    ): C {
+        return rootComponent(currentEntry, navController, currentEntry.arguments)
+    }
+
+    @Composable
+    fun rootComponent(
+        currentEntry: NavBackStackEntry,
+        navController: NavHostController,
         arguments: Bundle?
     ): C {
         val rootEntry = currentEntry.rememberBackStackEntry(navController, route = rootRoute)

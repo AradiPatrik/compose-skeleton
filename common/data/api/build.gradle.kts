@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.cardinalblue.data"
+    namespace = "com.cardinalblue.data.api"
 }
 
 dependencies {

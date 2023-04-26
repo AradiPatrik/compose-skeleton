@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.cardinalblue.movie_search"
+    namespace = "com.cardinalblue.movie_search.api"
     applyCompose()
 }
 

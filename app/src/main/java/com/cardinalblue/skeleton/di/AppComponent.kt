@@ -1,9 +1,8 @@
 package com.cardinalblue.skeleton.di
 
-import com.cardinalblue.api.DataProvider
+import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.platform.PlatformProvider
 import dagger.Component
-import dagger.Module
 import javax.inject.Singleton
 
 @Singleton
@@ -14,6 +13,7 @@ import javax.inject.Singleton
     ],
     modules = [
         NavigationEntryModule::class,
+        NavigationManagerModule::class,
     ]
 )
 interface AppComponent : AppProvider

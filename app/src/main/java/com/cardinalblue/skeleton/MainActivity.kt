@@ -5,10 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.rememberNavController
-import com.cardinalblue.api.DataProvider
+import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.FeatureEntriesProvider
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
 import com.cardinalblue.skeleton.navigation.App
 import com.cardinalblue.theme.SkeletonTheme
@@ -27,9 +29,12 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun AppWithInitializedProviders() {
         val navController = rememberNavController()
-
+        collectNavigationState().value?.let {
+            navController.navigate(it.destination)
+        }
 
         CompositionLocalProvider(
+            CompositionLocals.ofType<NavigationProvider>() provides application.appProvider,
             CompositionLocals.ofType<DataProvider>() provides application.appProvider,
             CompositionLocals.ofType<PlatformProvider>() provides application.appProvider,
             CompositionLocals.ofType<FeatureEntriesProvider>() provides application.appProvider
@@ -37,4 +42,11 @@ class MainActivity : ComponentActivity() {
             App(navController)
         }
     }
+
+    @Composable
+    private fun collectNavigationState() = application
+        .appProvider
+        .navigationManager
+        .commands
+        .collectAsState(initial = null)
 }

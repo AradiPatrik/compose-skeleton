@@ -37,7 +37,6 @@ dependencies {
     implementation(
         *movieSearch.all(),
         *movieDetails.all(),
-        *featuredMovies.all(),
         *profile.all()
     )
 
