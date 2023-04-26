@@ -4,14 +4,18 @@ import androidx.navigation.NamedNavArgument
 import com.cardinalblue.navigation.EmptyInput
 import com.cardinalblue.navigation.FeatureEntry
 import com.cardinalblue.navigation.NavigationCommand
+import com.cardinalblue.navigation.NavigationCommandProvider
 
 abstract class ProfileFeatureEntry : FeatureEntry<EmptyInput> {
-    override val featureRoute: String = "profile"
+    companion object : NavigationCommandProvider<EmptyInput> {
+        override val featureRoute: String = "profile"
 
-    override val arguments: List<NamedNavArgument> = emptyList()
+        override val arguments: List<NamedNavArgument> = emptyList()
 
-    override fun destination(input: EmptyInput): NavigationCommand = object : NavigationCommand {
-        override val arguments: List<NamedNavArgument> = this@ProfileFeatureEntry.arguments
-        override val destination: String = featureRoute
+        override fun destination(input: EmptyInput): NavigationCommand =
+            object : NavigationCommand {
+                override val arguments: List<NamedNavArgument> = this@Companion.arguments
+                override val destination: String = featureRoute
+            }
     }
 }
