@@ -34,6 +34,7 @@ dependencies {
         *data.all()
     )
 
+    // ===== feature modules =====
     implementation(
         *movieSearch.all(),
         *movieDetails.all(),

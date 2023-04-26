@@ -21,6 +21,8 @@ fun DependencyHandlerScope.theme() = project(":common:theme")
 fun DependencyHandlerScope.navigation() = project(":common:navigation")
 
 val DependencyHandlerScope.data get() = createProject(":common:data")
+
+// ===== feature modules =====
 val DependencyHandlerScope.movieSearch get() = createProject(":feature:movie-search")
 val DependencyHandlerScope.movieDetails get() = createProject(":feature:movie-details")
 val DependencyHandlerScope.profile get() = createProject(":feature:profile")
