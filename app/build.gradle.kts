@@ -35,11 +35,11 @@ dependencies {
     )
 
     // ===== feature modules =====
+    implementation(*profile.all())
     implementation(*featuredMovies.all())
     implementation(
         *movieSearch.all(),
         *movieDetails.all(),
-        *profile.all()
     )
 
     // ===== android =====

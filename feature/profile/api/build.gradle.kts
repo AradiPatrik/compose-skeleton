@@ -6,16 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.cardinalblue.profile"
-
-    // ===== compose =====
-    buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = versions.composeCompiler
-    }
+    namespace = "com.cardinalblue.profile.api"
+    applyCompose()
 }
 
 dependencies {
-    applyFeatureCommon()
+    implementation(navigation())
     implementation(libs.compose)
 }

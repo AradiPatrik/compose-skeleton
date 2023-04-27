@@ -8,18 +8,14 @@ plugins {
 
 android {
     namespace = "com.cardinalblue.profile.impl"
-
-    // ===== compose =====
-    buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = versions.composeCompiler
-    }
+    applyCompose()
 }
 
 dependencies {
     applyFeatureCommon()
     implementation(profile.api())
-    implementation(libs.compose)
+    implementation(libs.compose, libs.coroutines, libs.paging)
+
     implementation(libs.dagger)
     kapt(libs.daggerCompiler)
 }
