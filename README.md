@@ -1,4 +1,10 @@
 # Skeleton for new compose applications
+## How to run
+Put the following line into your `local.properties` file on the root of the project
+```gradle
+tmdb_key=replace_this_with_api_key
+```
+
 ## Architecture
 [Scalable multi-module architecture for Jetpack Compose apps with Pavlo Stavytsky](https://www.youtube.com/watch?v=j_rEor4YnNc)
 ## Architecture
