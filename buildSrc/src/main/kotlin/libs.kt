@@ -21,6 +21,8 @@ object versions {
     const val activityCompose = "1.7.1"
     const val navigationCompose = "2.5.3"
     const val composeBom = "2023.04.01"
+    const val landscapist = "2.1.11"
+    const val logcat = "0.1"
 }
 
 object libs {
@@ -61,14 +63,14 @@ object libs {
     val retrofit = listOf(
         "com.squareup.retrofit2:retrofit:${versions.retrofit}",
         "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
-        "com.squareup.okhttp3:logging-interceptor:4.10.0",
+        "com.squareup.okhttp3:logging-interceptor:4.11.0",
         "com.squareup.moshi:moshi-adapters:${versions.moshi}",
     )
     val moshiCompiler = "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
     val room = listOf(
         "androidx.room:room-ktx:${versions.room}",
         "androidx.room:room-runtime:${versions.room}",
-        "androidx.room:room-paging:2.5.0-alpha01",
+        "androidx.room:room-paging:${versions.room}",
     )
     const val roomCompiler =
         "androidx.room:room-compiler:${versions.room}"
@@ -93,6 +95,15 @@ object libs {
     const val profileInstaller =
         "androidx.profileinstaller:profileinstaller:1.3.0"
 
+    val landscapist = listOf(
+        "com.github.skydoves:landscapist-glide:${versions.landscapist}",
+        "com.github.skydoves:landscapist-placeholder:${versions.landscapist}",
+        "com.github.skydoves:landscapist-animation:${versions.landscapist}",
+        "com.github.skydoves:landscapist-transformation:${versions.landscapist}",
+        "com.github.skydoves:landscapist-palette:${versions.landscapist}",
+    )
+
+    val logcat = "com.squareup.logcat:logcat:0.1"
     val debug = listOf(
         "androidx.compose.ui:ui-test-manifest:${versions.composeTest}"
     )

@@ -5,6 +5,9 @@ import com.cardinalblue.data.di.DaggerDataComponent
 import com.cardinalblue.platform.DaggerPlatformComponent
 import com.cardinalblue.skeleton.di.AppProvider
 import com.cardinalblue.skeleton.di.DaggerAppComponent
+import logcat.AndroidLogcatLogger
+import logcat.LogPriority
+import logcat.LogPriority.VERBOSE
 
 class SkeletonApplication : Application() {
     lateinit var appProvider: AppProvider
@@ -18,6 +21,8 @@ class SkeletonApplication : Application() {
             .platformProvider(platformProvider)
             .dataProvider(DaggerDataComponent.builder().platformProvider(platformProvider).build())
             .build()
+
+        AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = VERBOSE)
     }
 }
 

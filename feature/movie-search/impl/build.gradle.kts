@@ -14,7 +14,14 @@ android {
 dependencies {
     applyFeatureCommon()
     implementation(movieSearch.api(), featuredMovies.api())
-    implementation(libs.compose, libs.coroutines, libs.paging)
+
+    implementation(
+        libs.compose,
+        libs.coroutines,
+        libs.paging,
+        libs.landscapist,
+        libs.logcat
+    )
 
     implementation(libs.dagger)
     kapt(libs.daggerCompiler)

@@ -58,4 +58,7 @@ dependencies {
 
     // ===== baseline profiles =====
     implementation(libs.profileInstaller)
+
+    // ===== logging =====
+    implementation(libs.logcat)
 }
