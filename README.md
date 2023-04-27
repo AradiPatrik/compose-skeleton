@@ -1,8 +1,6 @@
 # Skeleton for new compose applications
 ## Architecture
-### Api-Impl separation
 [Scalable multi-module architecture for Jetpack Compose apps with Pavlo Stavytsky](https://www.youtube.com/watch?v=j_rEor4YnNc)
-
 ## Architecture
 The project implements a scalable multi-module architecture that aims to achieve the following goals:
 - **Separation of concerns** - strict isolation and separation of logic between features for easier *testability* and *maintainability* of a codebase.
@@ -16,3 +14,6 @@ All the project modules could be separated into **3** types:
 
 
 ![Feature module architecture](architecture.png)
+
+## Navigatoin
+[Modular Navigation with Jetpack Compose](https://medium.com/google-developer-experts/modular-navigation-with-jetpack-compose-fda9f6b2bef7)
