@@ -15,6 +15,7 @@ abstract class ProfileFeatureEntry : FeatureEntry<EmptyInput> {
         override fun destination(input: EmptyInput): NavigationCommand =
             object : NavigationCommand {
                 override val arguments: List<NamedNavArgument> = this@Companion.arguments
+                override val destinationFeatureRoute: String = featureRoute
                 override val destination: String = featureRoute
             }
     }

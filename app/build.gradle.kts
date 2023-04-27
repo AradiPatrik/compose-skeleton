@@ -35,6 +35,7 @@ dependencies {
     )
 
     // ===== feature modules =====
+    implementation(*featuredMovies.all())
     implementation(
         *movieSearch.all(),
         *movieDetails.all(),

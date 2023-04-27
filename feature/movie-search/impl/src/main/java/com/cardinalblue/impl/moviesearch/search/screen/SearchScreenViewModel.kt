@@ -5,7 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.cardinalblue.domain.Movie
+import com.cardinalblue.featuredmovies.api.FeaturedMoviesFeatureEntry
 import com.cardinalblue.impl.moviesearch.search.usecase.SearchMovies
+import com.cardinalblue.navigation.FeatureEntry
+import com.cardinalblue.navigation.NavigationManager
+import com.cardinalblue.navigation.navigate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,6 +19,7 @@ import javax.inject.Inject
 
 class SearchScreenViewModel @Inject constructor(
     private val searchMovies: SearchMovies,
+    private val navigationManager: NavigationManager,
 ) : ViewModel() {
     sealed interface Query {
         val query: String
@@ -40,5 +45,9 @@ class SearchScreenViewModel @Inject constructor(
 
     fun refresh() {
         _query.value = Query.ForceRefresh(query.value.query)
+    }
+
+    fun onTitleClick() {
+        navigationManager.navigate(FeaturedMoviesFeatureEntry)
     }
 }

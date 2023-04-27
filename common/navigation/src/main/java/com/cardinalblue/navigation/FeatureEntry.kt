@@ -14,7 +14,6 @@ interface FeatureEntry<I : Input> {
 
 interface NavigationCommandProvider<I : Input> {
     val featureRoute: String
-
     val arguments: List<NamedNavArgument>
     fun destination(input: I): NavigationCommand
 }

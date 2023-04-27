@@ -1,6 +1,5 @@
-package com.cardinalblue.impl.moviesearch.search.screen
+package com.cardinalblue.featuredmovies.impl.featuredmovieslist.screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,20 +14,19 @@ import androidx.compose.ui.unit.dp
 import com.cardinalblue.theme.SkeletonTheme
 
 @Composable
-fun SearchScreen(viewModel: SearchScreenViewModel) {
-    SearchScreen(viewModel::onTitleClick)
+fun FeaturedMoviesListScreen(viewModel: FeaturedMoviesListScreenViewModel) {
+    FeaturedMoviesListScreen()
 }
 
 @Composable
-fun SearchScreen(onTitleClick: () -> Unit) {
+fun FeaturedMoviesListScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(16.dp)
-                    .clickable { onTitleClick() },
-                text = "Search Screen",
+                    .padding(16.dp),
+                text = "FeaturedMoviesList Screen",
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -37,8 +35,8 @@ fun SearchScreen(onTitleClick: () -> Unit) {
 
 @Composable
 @Preview(showBackground = true)
-fun SearchScreenPreview() {
+fun FeaturedMoviesListScreenPreview() {
     SkeletonTheme {
-        SearchScreen(onTitleClick = {})
+        FeaturedMoviesListScreen()
     }
 }

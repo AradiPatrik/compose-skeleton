@@ -10,17 +10,21 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.cardinalblue.featuredmovies.api.FeaturedMoviesFeatureEntry
 import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.FeatureEntriesProvider
 import com.cardinalblue.navigation.addFeatureEntry
 import com.cardinalblue.navigation.find
+import com.cardinalblue.navigation.injectedViewModel
+import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.profile.api.ProfileFeatureEntry
+import com.cardinalblue.skeleton.AppViewModel
 
 @Composable
-fun App(navController: NavController) {
+fun App(navController: NavController, appViewModel: AppViewModel) {
     Scaffold(
-        bottomBar = { MovieDbBottomAppBar() },
+        bottomBar = { MovieDbBottomAppBar(appViewModel) },
         content = { paddingValues ->
             NavGraph(paddingValues, navController)
         }
@@ -32,6 +36,7 @@ fun NavGraph(paddingValues: PaddingValues, navController: NavController) {
     val featureEntries = CompositionLocals.current<FeatureEntriesProvider>().featureEntries
     val movieSearchEntry = featureEntries.find<MovieSearchFeatureEntry>()
     val profileEntry = featureEntries.find<ProfileFeatureEntry>()
+    val featuredMoviesEntry = featureEntries.find<FeaturedMoviesFeatureEntry>()
 
     Box(
         modifier = Modifier
@@ -44,6 +49,7 @@ fun NavGraph(paddingValues: PaddingValues, navController: NavController) {
         ) {
             addFeatureEntry(navController, movieSearchEntry)
             addFeatureEntry(navController, profileEntry)
+            addFeatureEntry(navController, featuredMoviesEntry)
         }
     }
 }

@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    namespace = "com.cardinalblue.movie_search.impl"
+    namespace = "com.cardinalblue.featuredmovies.impl"
     applyCompose()
 }
 
 dependencies {
     applyFeatureCommon()
-    implementation(movieSearch.api(), profile.api(), featuredMovies.api())
+    implementation(featuredMovies.api())
     implementation(libs.compose, libs.coroutines, libs.paging)
 
     implementation(libs.dagger)
