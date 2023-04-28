@@ -13,23 +13,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cardinalblue.domain.Movie
 import com.cardinalblue.theme.SkeletonTheme
 
 @Composable
 fun MovieScreen(viewModel: MovieScreenViewModel) {
-    val movieId by viewModel.movieIdFlow.collectAsState()
-    MovieScreen(movieId)
+    val movie by viewModel.movie.collectAsState()
+    movie?.let {
+        MovieScreen(it)
+    }
 }
 
 @Composable
-fun MovieScreen(movieId: Int) {
+fun MovieScreen(movie: Movie) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp),
-                text = "Movie Screen $movieId",
+                text = "Movie Screen: ${movie.title}",
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -40,6 +43,18 @@ fun MovieScreen(movieId: Int) {
 @Preview(showBackground = true)
 fun MovieScreenPreview() {
     SkeletonTheme {
-        MovieScreen(1)
+        MovieScreen(
+            Movie(
+                1,
+                "Movie Title",
+                "Movie Overview",
+                "1.0",
+                "Movie Poster",
+                "Movie Backdrop",
+                "1.0",
+                1.0f,
+                10
+            )
+        )
     }
 }

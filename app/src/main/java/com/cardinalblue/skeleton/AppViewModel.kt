@@ -9,23 +9,25 @@ import com.cardinalblue.navigation.navigate
 import com.cardinalblue.profile.api.ProfileFeatureEntry
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import logcat.logcat
 import javax.inject.Inject
 
 class AppViewModel @Inject constructor(
     private val navigationManager: NavigationManager
 ) : ViewModel() {
-    enum class BottomSheetSelectedTab {
-        MovieSearch, FeaturedMovies, Profile, None
+    enum class BottomSheetSelectedTab(val entryPath: String) {
+        MovieSearch(MovieSearchFeatureEntry.featureRoute),
+        FeaturedMovies(FeaturedMoviesFeatureEntry.featureRoute),
+        Profile(ProfileFeatureEntry.featureRoute),
+        None(entryPath = "")
     }
 
-    val selectedTab = navigationManager.currentDestinationPath
-        .map { destinationPath ->
-            when (destinationPath) {
-                MovieSearchFeatureEntry.featureRoute -> BottomSheetSelectedTab.MovieSearch
-                FeaturedMoviesFeatureEntry.featureRoute -> BottomSheetSelectedTab.FeaturedMovies
-                ProfileFeatureEntry.featureRoute -> BottomSheetSelectedTab.Profile
-                else -> BottomSheetSelectedTab.None
+    val selectedTab = navigationManager.backStack
+        .map { backStack ->
+            backStack.asReversed().firstNotNullOf { backStackEntry ->
+                enumValues<BottomSheetSelectedTab>().firstOrNull { it.entryPath == backStackEntry }
             }
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, BottomSheetSelectedTab.MovieSearch)
@@ -33,7 +35,10 @@ class AppViewModel @Inject constructor(
     fun navigateTo(selectedTab: BottomSheetSelectedTab) {
         when (selectedTab) {
             BottomSheetSelectedTab.MovieSearch -> navigationManager.navigate(MovieSearchFeatureEntry)
-            BottomSheetSelectedTab.FeaturedMovies -> navigationManager.navigate(FeaturedMoviesFeatureEntry)
+            BottomSheetSelectedTab.FeaturedMovies -> navigationManager.navigate(
+                FeaturedMoviesFeatureEntry
+            )
+
             BottomSheetSelectedTab.Profile -> navigationManager.navigate(ProfileFeatureEntry)
             BottomSheetSelectedTab.None -> Unit
         }

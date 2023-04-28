@@ -6,15 +6,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface NavigationManager {
-    val currentDestinationPath: SharedFlow<String>
+    val backStack: SharedFlow<List<String>>
     fun navigate(directions: NavigationCommand)
 }
 
@@ -28,9 +26,9 @@ class NavigationManagerImpl @Inject constructor() : NavigationManager {
      * so it's safe to share it in the [GlobalScope]
      */
     @OptIn(DelicateCoroutinesApi::class)
-    override val currentDestinationPath
+    override val backStack
         get() = navController.currentBackStackEntryFlow
-            .map { it.destination.route.orEmpty() }
+            .map { navController.backQueue.map { it.destination.route.orEmpty() } }
             .shareIn(GlobalScope, SharingStarted.Eagerly, replay = 1)
 
     override fun navigate(directions: NavigationCommand) {

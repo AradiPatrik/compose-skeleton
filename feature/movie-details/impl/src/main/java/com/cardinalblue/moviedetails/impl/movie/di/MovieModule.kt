@@ -1,7 +1,7 @@
 package com.cardinalblue.moviedetails.impl.movie.di
 
-import com.cardinalblue.moviedetails.impl.movie.usecase.DoExample
-import com.cardinalblue.moviedetails.impl.movie.usecase.DoExampleUseCase
+import com.cardinalblue.moviedetails.impl.movie.usecase.GetMovie
+import com.cardinalblue.moviedetails.impl.movie.usecase.GetMovieUseCase
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Binds
 import dagger.Module
@@ -13,5 +13,5 @@ import dagger.Module
 interface MovieModule {
     @Binds
     @SubfeatureScoped
-    fun bindDoExampleUseCase(impl: DoExampleUseCase): DoExample
+    fun bindGetMovieUseCase(impl: GetMovieUseCase): GetMovie
 }
