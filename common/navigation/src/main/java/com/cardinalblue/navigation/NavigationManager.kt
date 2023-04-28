@@ -1,14 +1,39 @@
 package com.cardinalblue.navigation
 
+import androidx.navigation.NavController
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class NavigationManager @Inject constructor(){
-    val commands = MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1)
+interface NavigationManager {
+    val currentDestinationPath: SharedFlow<String>
+    fun navigate(directions: NavigationCommand)
+}
 
-    fun navigate(directions: NavigationCommand) {
+@Singleton
+class NavigationManagerImpl @Inject constructor() : NavigationManager {
+    val commands = MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1)
+    lateinit var navController: NavController
+
+    /**
+     * The lifetime of this flow is the lifetime of the application
+     * so it's safe to share it in the [GlobalScope]
+     */
+    @OptIn(DelicateCoroutinesApi::class)
+    override val currentDestinationPath
+        get() = navController.currentBackStackEntryFlow
+            .map { it.destination.route.orEmpty() }
+            .shareIn(GlobalScope, SharingStarted.Eagerly, replay = 1)
+
+    override fun navigate(directions: NavigationCommand) {
         commands.tryEmit(directions)
     }
 }

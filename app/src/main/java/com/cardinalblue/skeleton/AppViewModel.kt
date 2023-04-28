@@ -19,9 +19,9 @@ class AppViewModel @Inject constructor(
         MovieSearch, FeaturedMovies, Profile, None
     }
 
-    val selectedTab = navigationManager.commands
-        .map { navigationCommand ->
-            when (navigationCommand.destinationFeatureRoute) {
+    val selectedTab = navigationManager.currentDestinationPath
+        .map { destinationPath ->
+            when (destinationPath) {
                 MovieSearchFeatureEntry.featureRoute -> BottomSheetSelectedTab.MovieSearch
                 FeaturedMoviesFeatureEntry.featureRoute -> BottomSheetSelectedTab.FeaturedMovies
                 ProfileFeatureEntry.featureRoute -> BottomSheetSelectedTab.Profile

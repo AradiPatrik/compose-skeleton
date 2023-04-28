@@ -5,21 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.featuredmovies.api.FeaturedMoviesFeatureEntry
 import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.FeatureEntriesProvider
+import com.cardinalblue.navigation.NavigationManagerImpl
 import com.cardinalblue.navigation.NavigationProvider
-import com.cardinalblue.navigation.find
 import com.cardinalblue.navigation.injectedViewModel
-import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.platform.PlatformProvider
 import com.cardinalblue.profile.api.ProfileFeatureEntry
 import com.cardinalblue.skeleton.navigation.App
@@ -38,6 +38,9 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun AppWithInitializedProviders() {
+        val navController = rememberNavController()
+        getNavigationManager().navController = remember { navController }
+
         val appViewModel = injectedViewModel(this) {
             application.appProvider.appViewModel
         }
@@ -49,7 +52,6 @@ class MainActivity : ComponentActivity() {
                 ProfileFeatureEntry.featureRoute
             )
         }
-        val navController = rememberNavController()
         collectNavigationState().value?.let {
             val navOptions = if (it.destination in routeDestinations) {
                 NavOptions.Builder()
@@ -78,9 +80,11 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun collectNavigationState() = application
-        .appProvider
-        .navigationManager
+    private fun collectNavigationState() = getNavigationManager()
         .commands
         .collectAsState(initial = null)
+
+    private fun getNavigationManager() = (application
+        .appProvider
+        .navigationManager as NavigationManagerImpl)
 }
