@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.cardinalblue.featuredmovies.api.FeaturedMoviesFeatureEntry
+import com.cardinalblue.moviedetails.api.MovieDetailsFeatureEntry
 import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.FeatureEntriesProvider
@@ -37,6 +38,7 @@ fun NavGraph(paddingValues: PaddingValues, navController: NavController) {
     val movieSearchEntry = featureEntries.find<MovieSearchFeatureEntry>()
     val profileEntry = featureEntries.find<ProfileFeatureEntry>()
     val featuredMoviesEntry = featureEntries.find<FeaturedMoviesFeatureEntry>()
+    val movieDetailsFeatureEntry = featureEntries.find<MovieDetailsFeatureEntry>()
 
     Box(
         modifier = Modifier
@@ -50,6 +52,7 @@ fun NavGraph(paddingValues: PaddingValues, navController: NavController) {
             addFeatureEntry(navController, movieSearchEntry)
             addFeatureEntry(navController, profileEntry)
             addFeatureEntry(navController, featuredMoviesEntry)
+            addFeatureEntry(navController, movieDetailsFeatureEntry)
         }
     }
 }

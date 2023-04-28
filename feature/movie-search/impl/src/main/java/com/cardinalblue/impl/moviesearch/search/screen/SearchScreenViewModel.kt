@@ -6,6 +6,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.cardinalblue.domain.Movie
 import com.cardinalblue.impl.moviesearch.search.usecase.SearchMovies
+import com.cardinalblue.moviedetails.api.MovieDetailsFeatureEntry
+import com.cardinalblue.moviedetails.api.MovieDetailsInput
 import com.cardinalblue.navigation.NavigationManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +39,7 @@ class SearchScreenViewModel @Inject constructor(
     }
 
     val movies: Flow<PagingData<Movie>> = query
-        .debounce { if(it is Query.Typing) 500 else 0 }
+        .debounce { if (it is Query.Typing) 500 else 0 }
         .flatMapLatest { searchMovies(it.query) }
         .cachedIn(viewModelScope)
 
@@ -50,6 +52,7 @@ class SearchScreenViewModel @Inject constructor(
     }
 
     fun onMovieClick(movieId: Int) {
-        logcat { "Movie clicked: $movieId" }
+        navigationManager.navigate(
+            MovieDetailsFeatureEntry.destination(MovieDetailsInput(movieId)))
     }
 }

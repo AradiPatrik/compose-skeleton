@@ -23,6 +23,7 @@ fun DependencyHandlerScope.navigation() = project(":common:navigation")
 val DependencyHandlerScope.data get() = createProject(":common:data")
 
 // ===== feature modules =====
+val DependencyHandlerScope.movieDetails get() = createProject(":feature:movie-details")
 val DependencyHandlerScope.featuredMovies get() = createProject(":feature:featured-movies")
 val DependencyHandlerScope.movieSearch get() = createProject(":feature:movie-search")
 val DependencyHandlerScope.profile get() = createProject(":feature:profile")
