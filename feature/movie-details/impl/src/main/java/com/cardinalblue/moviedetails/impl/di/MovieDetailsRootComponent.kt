@@ -2,6 +2,7 @@ package com.cardinalblue.moviedetails.impl.di
 
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.moviedetails.api.MovieDetailsProvider
+import com.cardinalblue.moviedetails.impl.credits.di.CreditsSubcomponent
 import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.moviedetails.impl.movie.di.MovieSubcomponent
 import com.cardinalblue.navigation.FeatureScoped
@@ -24,6 +25,7 @@ import dagger.Component
 )
 interface MovieDetailsRootComponent : MovieDetailsProvider {
     val movieSubcomponentFactory: MovieSubcomponent.Factory
+    val creditsSubcomponentFactory: CreditsSubcomponent.Factory
 
     @Component.Factory
     interface Factory {

@@ -1,8 +1,11 @@
 package com.cardinalblue.navigation
 
+import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 
 interface Input
 
@@ -27,4 +30,15 @@ fun NavGraphBuilder.addFeatureEntry(
     with(featureEntry) {
         navigation(navController)
     }
+}
+
+fun NavGraphBuilder.composable(
+    navigationCommandProvider: NavigationCommandProvider<*>,
+    content: @Composable (NavBackStackEntry) -> Unit,
+) {
+    composable(
+        route = navigationCommandProvider.featureRoute,
+        arguments = navigationCommandProvider.arguments,
+        content = content
+    )
 }

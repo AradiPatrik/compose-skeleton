@@ -1,5 +1,6 @@
 package com.cardinalblue.moviedetails.impl.movie.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,18 +21,19 @@ import com.cardinalblue.theme.SkeletonTheme
 fun MovieScreen(viewModel: MovieScreenViewModel) {
     val movie by viewModel.movie.collectAsState()
     movie?.let {
-        MovieScreen(it)
+        MovieScreen(it, viewModel::onCreditsClicked)
     }
 }
 
 @Composable
-fun MovieScreen(movie: Movie) {
+fun MovieScreen(movie: Movie, onCreditsClick: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .clickable { onCreditsClick() },
                 text = "Movie Screen: ${movie.title}",
                 style = MaterialTheme.typography.titleLarge
             )
@@ -54,7 +56,8 @@ fun MovieScreenPreview() {
                 "1.0",
                 1.0f,
                 10
-            )
+            ),
+            onCreditsClick = {}
         )
     }
 }
