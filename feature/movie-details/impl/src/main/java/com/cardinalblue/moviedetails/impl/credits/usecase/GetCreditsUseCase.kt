@@ -2,7 +2,6 @@ package com.cardinalblue.moviedetails.impl.credits.usecase
 
 import com.cardinalblue.domain.Credit
 import com.cardinalblue.domain.MovieRepository
-import com.cardinalblue.navigation.SubfeatureScoped
 import com.cardinalblue.platform.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

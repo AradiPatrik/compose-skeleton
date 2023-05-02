@@ -21,7 +21,10 @@ import dagger.Component
         PlatformProvider::class,
         NavigationProvider::class,
     ],
-    modules = [MovieDetailsRootModule::class, MovieDetailsSubcomponentsModule::class]
+    modules = [
+        MovieDetailsRootModule::class,
+        MovieDetailsSubcomponentsModule::class
+    ]
 )
 interface MovieDetailsRootComponent : MovieDetailsProvider {
     val movieSubcomponentFactory: MovieSubcomponent.Factory

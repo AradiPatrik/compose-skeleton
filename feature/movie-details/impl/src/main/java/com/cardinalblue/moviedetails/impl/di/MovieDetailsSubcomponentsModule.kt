@@ -7,5 +7,10 @@ import dagger.Module
 /**
  * Add subfeature-components here
  */
-@Module(subcomponents = [MovieSubcomponent::class, CreditsSubcomponent::class])
+@Module(
+    subcomponents = [
+        MovieSubcomponent::class,
+        CreditsSubcomponent::class
+    ]
+)
 interface MovieDetailsSubcomponentsModule

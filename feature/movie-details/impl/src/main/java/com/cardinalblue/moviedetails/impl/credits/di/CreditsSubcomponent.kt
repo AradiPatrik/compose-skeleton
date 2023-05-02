@@ -6,7 +6,9 @@ import dagger.Subcomponent
 
 @SubfeatureScoped
 @Subcomponent(
-    modules = [CreditsModule::class]
+    modules = [
+        CreditsModule::class,
+    ]
 )
 interface CreditsSubcomponent {
     val viewModel: CreditsScreenViewModel

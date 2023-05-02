@@ -13,7 +13,7 @@ import javax.inject.Inject
 @SubfeatureScoped
 class CreditsScreenViewModel @Inject constructor(
     @MovieId val movieId: Int,
-    getCredits: GetCredits
+    private val getCredits: GetCredits
 ) : ViewModel() {
     private val credits = MutableStateFlow<List<Credit>>(emptyList())
 

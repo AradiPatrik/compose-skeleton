@@ -1,5 +1,6 @@
 package com.cardinalblue.moviedetails.impl.movie.di
 
+import com.cardinalblue.moviedetails.impl.common.reviews.di.ReviewsModule
 import com.cardinalblue.moviedetails.impl.movie.screen.MovieScreenViewModel
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
@@ -10,7 +11,12 @@ import dagger.Subcomponent
  * should be added inside the [MovieSubcomponent.Factory] as parameter.
  */
 @SubfeatureScoped
-@Subcomponent(modules = [MovieModule::class])
+@Subcomponent(
+    modules = [
+        MovieModule::class,
+        ReviewsModule::class,
+    ]
+)
 interface MovieSubcomponent {
     val viewModel: MovieScreenViewModel
 

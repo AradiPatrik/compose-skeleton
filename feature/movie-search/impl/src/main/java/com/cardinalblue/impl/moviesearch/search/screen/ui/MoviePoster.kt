@@ -3,6 +3,8 @@ package com.cardinalblue.impl.moviesearch.search.screen.ui
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.surfaceColorAtElevation
@@ -37,27 +39,33 @@ fun Poster(modifier: Modifier = Modifier, url: String, movieId: Int, onPosterCli
             ?: MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
         animationSpec = tween(1500)
     )
-    GlideImage(
+    Box(
         modifier = modifier
-            .glow(color = animatedColor, alpha = 0.2f, radius = 8.dp)
+            .height(255.dp)
             .padding(8.dp)
-            .clip(MaterialTheme.shapes.medium)
-            .clickable { onPosterClick(movieId) },
-        imageModel = { url },
-        imageOptions = ImageOptions(
-            contentScale = ContentScale.Inside,
-            alignment = Alignment.Center
-        ),
-        component = rememberImageComponent {
-            +ShimmerPlugin(
-                baseColor = MaterialTheme.colorScheme.surface,
-                highlightColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
-            )
-            +CrossfadePlugin(duration = 500)
-            +PalettePlugin { palette -> paletteState = palette }
-        },
-        previewPlaceholder = R.drawable.tom_and_jerry,
-    )
+            .glow(color = animatedColor, alpha = 0.5f, radius = 25.dp, offsetY = 12.dp)
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.medium)
+                .clickable { onPosterClick(movieId) },
+            imageModel = { url },
+            imageOptions = ImageOptions(
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.Center
+            ),
+            component = rememberImageComponent {
+                +ShimmerPlugin(
+                    baseColor = MaterialTheme.colorScheme.surface,
+                    highlightColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+                )
+                +CrossfadePlugin(duration = 500)
+                +PalettePlugin { palette -> paletteState = palette }
+            },
+            previewPlaceholder = com.cardinalblue.theme.R.drawable.tom_and_jerry,
+        )
+    }
+
 }
 
 @Composable
