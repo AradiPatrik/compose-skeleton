@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 fun interface GetReviews {
-    fun invoke(movieId: Int): Flow<PagingData<Review>>
+    operator fun invoke(movieId: Int): Flow<PagingData<Review>>
 }
 
 class GetReviewsUseCase @Inject constructor(

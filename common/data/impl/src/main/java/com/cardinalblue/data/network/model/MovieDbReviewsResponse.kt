@@ -28,10 +28,11 @@ data class ReviewWire(
     val updatedAt: Date
 )
 
+@JsonClass(generateAdapter = true)
 data class AuthorWire(
     val name: String,
     val username: String,
     @Json(name = "avatar_path")
     val avatarPath: String?,
-    val rating: Int?
+    val rating: Float?
 )

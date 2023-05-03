@@ -21,5 +21,5 @@ data class AuthorEntity(
     @ColumnInfo("name") val name: String,
     @ColumnInfo("username") val username: String,
     @ColumnInfo("avatar_path") val avatarPath: String?,
-    @ColumnInfo("rating") val rating: Int?,
+    @ColumnInfo("rating") val rating: Float?,
 )

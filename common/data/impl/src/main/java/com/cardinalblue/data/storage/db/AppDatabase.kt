@@ -22,7 +22,7 @@ import com.cardinalblue.data.storage.entity.ReviewRemoteKeysEntity
         MovieRemoteKeyEntity::class,
         ReviewRemoteKeysEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
