@@ -16,7 +16,7 @@ abstract class FeaturedMoviesFeatureEntry : FeatureEntry<EmptyInput> {
         override val arguments = emptyList<NamedNavArgument>()
 
         override fun destination(input: EmptyInput) = object : NavigationCommand {
-            override val arguments: List<NamedNavArgument> = this@Companion.arguments
+            override val args: List<NamedNavArgument> = this@Companion.arguments
             override val destinationFeatureRoute: String = featureRoute
             override val destination: String = featureRoute
         }

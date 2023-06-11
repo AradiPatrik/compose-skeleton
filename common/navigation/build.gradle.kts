@@ -12,6 +12,7 @@ android {
 }
 
 dependencies {
+    implementation(platform())
     implementation(libs.compose)
     implementation(libs.dagger)
     kapt(libs.daggerCompiler)

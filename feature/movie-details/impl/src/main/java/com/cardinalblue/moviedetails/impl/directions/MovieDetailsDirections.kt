@@ -20,7 +20,7 @@ object MovieDetailsDirections {
         )
 
         override fun destination(input: MovieDetailsInput) = object : NavigationCommand {
-            override val arguments = Credits.arguments
+            override val args = Credits.arguments
             override val destinationFeatureRoute = MovieDetailsFeatureEntry.featureRoute
             override val destination: String = "credits/${input.movieId}"
         }

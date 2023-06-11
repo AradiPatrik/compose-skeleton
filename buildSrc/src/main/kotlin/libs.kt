@@ -67,6 +67,8 @@ object libs {
         "com.squareup.moshi:moshi-adapters:${versions.moshi}",
     )
     val moshiCompiler = "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
+    val moshi = "com.squareup.moshi:moshi-kotlin:${versions.moshi}"
+
     val room = listOf(
         "androidx.room:room-ktx:${versions.room}",
         "androidx.room:room-runtime:${versions.room}",

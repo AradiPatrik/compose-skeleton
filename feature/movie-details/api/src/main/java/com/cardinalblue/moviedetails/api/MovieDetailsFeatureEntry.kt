@@ -5,7 +5,7 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.cardinalblue.navigation.FeatureEntry
-import com.cardinalblue.navigation.Input
+import com.cardinalblue.navigation.NavInput
 import com.cardinalblue.navigation.NavigationCommand
 import com.cardinalblue.navigation.NavigationCommandProvider
 
@@ -25,14 +25,14 @@ abstract class MovieDetailsFeatureEntry : FeatureEntry<MovieDetailsInput> {
         )
 
         override fun destination(input: MovieDetailsInput) = object : NavigationCommand {
-            override val arguments: List<NamedNavArgument> = this@Companion.arguments
+            override val args: List<NamedNavArgument> = this@Companion.arguments
             override val destinationFeatureRoute: String = featureRoute
             override val destination: String = "movie-details/${input.movieId}"
         }
     }
 }
 
-data class MovieDetailsInput(val movieId: Int) : Input {
+data class MovieDetailsInput(val movieId: Int) : NavInput {
     companion object {
         fun fromBundle(bundle: Bundle?): MovieDetailsInput {
             bundle ?: error("MovieDetailsInput bundle is null")

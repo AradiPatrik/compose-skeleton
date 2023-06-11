@@ -16,4 +16,7 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.daggerCompiler)
+
+    kapt(libs.moshiCompiler)
+    implementation(libs.moshi)
 }
