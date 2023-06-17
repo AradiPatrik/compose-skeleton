@@ -23,6 +23,7 @@ import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.platform.PlatformProvider
 import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.composable
+import com.cardinalblue.navigation.getInput
 import javax.inject.Inject
 
 /**
@@ -41,7 +42,9 @@ class MovieDetailsFeatureEntryImpl @Inject constructor() : MovieDetailsFeatureEn
                 val rootComponent = rootComponent(backstackEntry, navController)
 
                 val viewModel = injectedViewModel(backstackEntry) {
-                    rootComponent.movieSubcomponentFactory.create().viewModel
+                    rootComponent.movieSubcomponentFactory.create().viewModelFactory.create(
+                        backstackEntry.getInput(MovieDetailsInput)
+                    )
                 }
 
                 MovieScreen(viewModel = viewModel)
@@ -50,7 +53,9 @@ class MovieDetailsFeatureEntryImpl @Inject constructor() : MovieDetailsFeatureEn
                 val rootComponent = rootComponent(backStackEntry, navController)
 
                 val viewModel = injectedViewModel(backStackEntry) {
-                    rootComponent.creditsSubcomponentFactory.create().viewModel
+                    rootComponent.creditsSubcomponentFactory.create().viewModelFactory.create(
+                        backStackEntry.getInput(MovieDetailsInput)
+                    )
                 }
 
                 CreditsScreen(viewModel)
@@ -67,14 +72,12 @@ class MovieDetailsFeatureEntryImpl @Inject constructor() : MovieDetailsFeatureEn
         val currentDataProvider = CompositionLocals.current<DataProvider>()
         val currentPlatformProvider = CompositionLocals.current<PlatformProvider>()
         val navigationProvider = CompositionLocals.current<NavigationProvider>()
-        val input = MovieDetailsInput.fromBundle(arguments)
-        return rememberScoped(rootEntry, key = input.movieId.toString()) {
+        return rememberScoped(rootEntry) {
             DaggerMovieDetailsRootComponent.factory()
                 .create(
                     currentDataProvider,
                     currentPlatformProvider,
                     navigationProvider,
-                    input.movieId
                 )
         }
     }

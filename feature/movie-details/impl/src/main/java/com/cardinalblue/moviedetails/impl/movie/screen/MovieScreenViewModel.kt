@@ -14,29 +14,36 @@ import com.cardinalblue.moviedetails.impl.directions.MovieDetailsDirections.Cred
 import com.cardinalblue.moviedetails.impl.movie.usecase.GetMovie
 import com.cardinalblue.navigation.NavigationManager
 import com.cardinalblue.navigation.SubfeatureScoped
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@SubfeatureScoped
-class MovieScreenViewModel @Inject constructor(
+class MovieScreenViewModel @AssistedInject constructor(
     private val getMovie: GetMovie,
     private val getReviews: GetReviews,
-    @MovieId private val movieId: Int,
+    @Assisted private val input: MovieDetailsInput,
     private val navigationManager: NavigationManager,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(input: MovieDetailsInput): MovieScreenViewModel
+    }
+
     val movie = MutableStateFlow<Movie?>(null)
-    val reviews = getReviews(movieId).cachedIn(viewModelScope)
+    val reviews = getReviews(input.movieId).cachedIn(viewModelScope)
 
     init {
         viewModelScope.launch {
-            movie.value = getMovie(movieId)
+            movie.value = getMovie(input.movieId)
         }
     }
 
     fun onCreditsClicked() {
         navigationManager.navigate(
-            Credits.destination(MovieDetailsInput(movieId))
+            Credits.destination(MovieDetailsInput(input.movieId))
         )
     }
 }

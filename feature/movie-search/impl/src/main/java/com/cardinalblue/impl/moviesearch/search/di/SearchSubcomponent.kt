@@ -13,7 +13,6 @@ import dagger.Subcomponent
 @Subcomponent(modules = [SearchModule::class])
 interface SearchSubcomponent {
     val viewModel: SearchScreenViewModel
-
     @Subcomponent.Factory
     interface Factory {
         fun create(): SearchSubcomponent

@@ -18,7 +18,7 @@ import dagger.Subcomponent
     ]
 )
 interface MovieSubcomponent {
-    val viewModel: MovieScreenViewModel
+    val viewModelFactory: MovieScreenViewModel.Factory
 
     @Subcomponent.Factory
     interface Factory {

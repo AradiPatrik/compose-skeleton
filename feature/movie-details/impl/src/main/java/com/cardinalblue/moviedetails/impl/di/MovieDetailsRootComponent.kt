@@ -3,11 +3,10 @@ package com.cardinalblue.moviedetails.impl.di
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.moviedetails.api.MovieDetailsProvider
 import com.cardinalblue.moviedetails.impl.credits.di.CreditsSubcomponent
-import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.moviedetails.impl.movie.di.MovieSubcomponent
 import com.cardinalblue.navigation.FeatureScoped
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
-import dagger.BindsInstance
 import dagger.Component
 
 /**
@@ -36,7 +35,6 @@ interface MovieDetailsRootComponent : MovieDetailsProvider {
             dataProvider: DataProvider,
             platformProvider: PlatformProvider,
             navigationProvider: NavigationProvider,
-            @BindsInstance @MovieId movieId: Int,
         ): MovieDetailsRootComponent
     }
 }

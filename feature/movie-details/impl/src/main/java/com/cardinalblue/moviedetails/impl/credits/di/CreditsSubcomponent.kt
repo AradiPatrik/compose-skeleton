@@ -11,7 +11,7 @@ import dagger.Subcomponent
     ]
 )
 interface CreditsSubcomponent {
-    val viewModel: CreditsScreenViewModel
+    val viewModelFactory: CreditsScreenViewModel.Factory
 
     @Subcomponent.Factory
     interface Factory {

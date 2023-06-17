@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 
     `android-config`
 }
@@ -12,5 +13,6 @@ android {
 
 dependencies {
     implementation(navigation())
-    implementation(libs.compose)
+    implementation(libs.compose, libs.moshi)
+    ksp(libs.moshiCompiler)
 }
