@@ -25,7 +25,7 @@ import dagger.Component
         MovieDetailsSubcomponentsModule::class
     ]
 )
-interface MovieDetailsRootComponent : MovieDetailsProvider {
+interface MovieDetailsRootComponent : MovieDetailsProvider, NavigationProvider {
     val movieSubcomponentFactory: MovieSubcomponent.Factory
     val creditsSubcomponentFactory: CreditsSubcomponent.Factory
 

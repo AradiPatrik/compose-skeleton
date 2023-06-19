@@ -4,6 +4,7 @@ import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.featuredmovies.api.FeaturedMoviesProvider
 import com.cardinalblue.featuredmovies.impl.featuredmovieslist.di.FeaturedMoviesListSubcomponent
 import com.cardinalblue.navigation.FeatureScoped
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
 import dagger.Component
 
@@ -16,9 +17,10 @@ import dagger.Component
     dependencies = [
         DataProvider::class,
         PlatformProvider::class,
+        NavigationProvider::class,
     ],
     modules = [FeaturedMoviesRootModule::class, FeaturedMoviesSubcomponentsModule::class]
 )
-interface FeaturedMoviesRootComponent : FeaturedMoviesProvider {
+interface FeaturedMoviesRootComponent : FeaturedMoviesProvider, NavigationProvider {
     val featuredMoviesListSubcomponentFactory: FeaturedMoviesListSubcomponent.Factory
 }

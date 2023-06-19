@@ -21,6 +21,6 @@ import dagger.Component
     ],
     modules = [MovieSearchRootModule::class, MovieSearchSubcomponentsModule::class]
 )
-interface MovieSearchRootComponent : MovieSearchProvider {
+interface MovieSearchRootComponent : MovieSearchProvider, NavigationProvider {
     val searchSubcomponentFactory: SearchSubcomponent.Factory
 }

@@ -1,27 +1,24 @@
 @file:Suppress("ClassName")
 
 object versions {
-    const val ksp = "1.8.20-1.0.11"
+    const val ksp = "1.8.21-1.0.11"
     const val versionPlugin = "0.46.0"
     const val core = "1.9.0"
     const val lifecycle = "2.6.1"
-    const val coroutines = "1.7.0-RC"
-    const val composeCompiler = "1.4.6"
-    const val compose = "1.4.6"
-    const val composeTest = "1.4.2"
-    const val dagger = "2.45"
-    const val paging = "3.1.1"
+    const val coroutines = "1.7.1"
+    const val composeCompiler = "1.4.7"
+    const val dagger = "2.46.1"
+    const val paging = "3.2.0-beta01"
     const val pagingCompose = "1.0.0-alpha18"
     const val accompanist = "0.25.1"
     const val retrofit = "2.9.0"
-    const val moshi = "1.14.0"
+    const val moshi = "1.15.0"
     const val room = "2.5.1"
     const val mockk = "1.13.5"
-    const val material3 = "1.1.0-rc01"
-    const val activityCompose = "1.7.1"
-    const val navigationCompose = "2.5.3"
-    const val composeBom = "2023.04.01"
-    const val landscapist = "2.1.11"
+    const val activityCompose = "1.7.2"
+    const val navigationCompose = "2.7.0-beta01"
+    const val composeBom = "2023.06.00"
+    const val landscapist = "2.2.1"
     const val logcat = "0.1"
 }
 
@@ -34,7 +31,7 @@ object libs {
         Bom("androidx.compose:compose-bom:${versions.composeBom}"),
         "androidx.compose.ui:ui-tooling-preview",
         "androidx.compose.ui:ui-tooling",
-        "androidx.compose.material3:material3:${versions.material3}",
+        "androidx.compose.material3:material3",
         "androidx.activity:activity-compose:${versions.activityCompose}",
         "androidx.navigation:navigation-compose:${versions.navigationCompose}",
     )
@@ -86,7 +83,7 @@ object libs {
     val androidTests = listOf(
         "androidx.test.ext:junit:1.1.5",
         "androidx.test.espresso:espresso-core:3.5.1",
-        "androidx.compose.ui:ui-test-junit4:${versions.composeTest}"
+        "androidx.compose.ui:ui-test-junit4"
     )
     const val uiautomator =
         "androidx.test.uiautomator:uiautomator:2.2.0"
@@ -95,7 +92,7 @@ object libs {
         "androidx.benchmark:benchmark-macro-junit4:1.1.0-beta04"
 
     const val profileInstaller =
-        "androidx.profileinstaller:profileinstaller:1.3.0"
+        "androidx.profileinstaller:profileinstaller:1.3.1"
 
     val landscapist = listOf(
         "com.github.skydoves:landscapist-glide:${versions.landscapist}",
@@ -107,6 +104,6 @@ object libs {
 
     val logcat = "com.squareup.logcat:logcat:0.1"
     val debug = listOf(
-        "androidx.compose.ui:ui-test-manifest:${versions.composeTest}"
+        "androidx.compose.ui:ui-test-manifest"
     )
 }

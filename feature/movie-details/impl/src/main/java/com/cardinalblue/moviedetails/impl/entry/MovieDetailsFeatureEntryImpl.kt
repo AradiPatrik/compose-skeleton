@@ -6,8 +6,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.moviedetails.api.MovieDetailsFeatureEntry
 import com.cardinalblue.moviedetails.api.MovieDetailsInput
@@ -16,52 +14,46 @@ import com.cardinalblue.moviedetails.impl.di.DaggerMovieDetailsRootComponent
 import com.cardinalblue.moviedetails.impl.di.MovieDetailsRootComponent
 import com.cardinalblue.moviedetails.impl.directions.MovieDetailsDirections
 import com.cardinalblue.moviedetails.impl.movie.screen.MovieScreen
+import com.cardinalblue.navigation.BaseFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
-import com.cardinalblue.navigation.RootComponentHolder
-import com.cardinalblue.navigation.injectedViewModel
+import com.cardinalblue.navigation.NavigationCommand
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.platform.PlatformProvider
-import com.cardinalblue.navigation.NavigationProvider
-import com.cardinalblue.navigation.composable
-import com.cardinalblue.navigation.getInput
 import javax.inject.Inject
 
 /**
  * The entry point for the feature. Provides root component and navigation graph for the feature.
  */
-class MovieDetailsFeatureEntryImpl @Inject constructor() : MovieDetailsFeatureEntry(),
-    RootComponentHolder<MovieDetailsRootComponent> {
-    override val rootRoute: String
-        get() = "@movie-details"
-
-    override fun NavGraphBuilder.navigation(
+class MovieDetailsFeatureEntryImpl @Inject constructor() : BaseFeatureEntry<MovieDetailsInput, MovieDetailsRootComponent>(
+    rootRoute = "@movie-details",
+    startRoute = MovieDetailsFeatureEntry.featureRoute
+), MovieDetailsFeatureEntry {
+    override fun NavGraphBuilder.buildNavigation(
         navController: NavHostController,
+        navigate: NavHostController.(NavigationCommand) -> Unit
     ) {
-        navigation(startDestination = featureRoute, route = rootRoute) {
-            composable(MovieDetailsDirections.Movie) { backstackEntry ->
-                val rootComponent = rootComponent(backstackEntry, navController)
+        addNode(
+            direction = MovieDetailsDirections.Movie,
+            navController = navController,
+            navigate = navigate,
+            createVm = { _, input, component ->
+                component.movieSubcomponentFactory.create().viewModelFactory.create(input)
+            },
+            content = { MovieScreen(it) }
+        )
 
-                val viewModel = injectedViewModel(backstackEntry) {
-                    rootComponent.movieSubcomponentFactory.create().viewModelFactory.create(
-                        backstackEntry.getInput(MovieDetailsInput)
-                    )
-                }
-
-                MovieScreen(viewModel = viewModel)
-            }
-            composable(MovieDetailsDirections.Credits) { backStackEntry ->
-                val rootComponent = rootComponent(backStackEntry, navController)
-
-                val viewModel = injectedViewModel(backStackEntry) {
-                    rootComponent.creditsSubcomponentFactory.create().viewModelFactory.create(
-                        backStackEntry.getInput(MovieDetailsInput)
-                    )
-                }
-
-                CreditsScreen(viewModel)
-            }
-        }
+        addNode(
+            direction = MovieDetailsDirections.Credits,
+            navController = navController,
+            navigate = navigate,
+            createVm = { _, input, component ->
+                component.creditsSubcomponentFactory.create().viewModelFactory.create(input)
+            },
+            content = { CreditsScreen(it) }
+        )
     }
+
 
     @Composable
     override fun provideRootComponent(

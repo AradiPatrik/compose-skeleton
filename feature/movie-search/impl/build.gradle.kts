@@ -13,7 +13,7 @@ android {
 
 dependencies {
     applyFeatureCommon()
-    implementation(movieSearch.api(), movieDetails.api())
+    implementation(movieSearch.api(), movieDetails.api(), featuredMovies.api())
 
     implementation(
         libs.compose,

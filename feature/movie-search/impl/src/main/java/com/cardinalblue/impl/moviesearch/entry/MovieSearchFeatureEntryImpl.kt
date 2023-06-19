@@ -2,6 +2,9 @@ package com.cardinalblue.impl.moviesearch.entry
 
 import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -13,7 +16,10 @@ import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.impl.moviesearch.di.DaggerMovieSearchRootComponent
 import com.cardinalblue.impl.moviesearch.di.MovieSearchRootComponent
 import com.cardinalblue.impl.moviesearch.search.screen.SearchScreen
+import com.cardinalblue.navigation.BaseFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
+import com.cardinalblue.navigation.EmptyInput
+import com.cardinalblue.navigation.NavigationCommand
 import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.RootComponentHolder
 import com.cardinalblue.navigation.injectedViewModel
@@ -24,25 +30,27 @@ import javax.inject.Inject
 /**
  * The entry point for the feature. Provides root component and navigation graph for the feature.
  */
-class MovieSearchFeatureEntryImpl @Inject constructor() : MovieSearchFeatureEntry(),
-    RootComponentHolder<MovieSearchRootComponent> {
-    override val rootRoute: String
-        get() = "@movie-search"
+class MovieSearchFeatureEntryImpl @Inject constructor() :
+    BaseFeatureEntry<EmptyInput, MovieSearchRootComponent>(
+        rootRoute = "@movie-search",
+        startRoute = MovieSearchFeatureEntry.featureRoute
+    ), MovieSearchFeatureEntry {
 
-    override fun NavGraphBuilder.navigation(
+    override fun NavGraphBuilder.buildNavigation(
         navController: NavHostController,
+        navigate: NavHostController.(NavigationCommand) -> Unit
     ) {
-        navigation(startDestination = featureRoute, route = rootRoute) {
-            composable(featureRoute, arguments) { backstackEntry ->
-                val rootComponent = rootComponent(backstackEntry, navController)
-
-                val viewModel = injectedViewModel(backstackEntry) {
-                    rootComponent.searchSubcomponentFactory.create().viewModel
-                }
-
-                SearchScreen(viewModel = viewModel)
-            }
-        }
+        addNode(
+            direction = MovieSearchFeatureEntry.Direction,
+            navController = navController,
+            navigate = navigate,
+            createVm = { savedStateHandle, _, component ->
+                component.searchSubcomponentFactory.create().viewModelFactory.create(
+                    savedStateHandle
+                )
+            },
+            content = { SearchScreen(it) }
+        )
     }
 
     @Composable

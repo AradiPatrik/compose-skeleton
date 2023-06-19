@@ -12,7 +12,7 @@ import dagger.Subcomponent
 @SubfeatureScoped
 @Subcomponent(modules = [SearchModule::class])
 interface SearchSubcomponent {
-    val viewModel: SearchScreenViewModel
+    val viewModelFactory: SearchScreenViewModel.Factory
     @Subcomponent.Factory
     interface Factory {
         fun create(): SearchSubcomponent

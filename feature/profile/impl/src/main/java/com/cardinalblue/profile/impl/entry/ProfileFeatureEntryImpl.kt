@@ -9,11 +9,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.cardinalblue.data.api.DataProvider
+import com.cardinalblue.navigation.BaseFeatureEntry
 import com.cardinalblue.profile.api.ProfileFeatureEntry
 import com.cardinalblue.profile.impl.di.DaggerProfileRootComponent
 import com.cardinalblue.profile.impl.di.ProfileRootComponent
 import com.cardinalblue.profile.impl.profiledetails.screen.ProfileDetailsScreen
 import com.cardinalblue.navigation.CompositionLocals
+import com.cardinalblue.navigation.EmptyInput
+import com.cardinalblue.navigation.NavigationCommand
 import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.RootComponentHolder
 import com.cardinalblue.navigation.injectedViewModel
@@ -24,25 +27,24 @@ import javax.inject.Inject
 /**
  * The entry point for the feature. Provides root component and navigation graph for the feature.
  */
-class ProfileFeatureEntryImpl @Inject constructor() : ProfileFeatureEntry(),
-    RootComponentHolder<ProfileRootComponent> {
-    override val rootRoute: String
-        get() = "@profile"
-
-    override fun NavGraphBuilder.navigation(
+class ProfileFeatureEntryImpl @Inject constructor() :
+    BaseFeatureEntry<EmptyInput, ProfileRootComponent>(
+        rootRoute = "@profile",
+        ProfileFeatureEntry.featureRoute
+    ), ProfileFeatureEntry {
+    override fun NavGraphBuilder.buildNavigation(
         navController: NavHostController,
+        navigate: NavHostController.(NavigationCommand) -> Unit
     ) {
-        navigation(startDestination = featureRoute, route = rootRoute) {
-            composable(featureRoute, arguments) { backstackEntry ->
-                val rootComponent = rootComponent(backstackEntry, navController)
-
-                val viewModel = injectedViewModel(backstackEntry) {
-                    rootComponent.profileDetailsSubcomponentFactory.create().viewModel
-                }
-
-                ProfileDetailsScreen(viewModel = viewModel)
-            }
-        }
+        addNode(
+            direction = ProfileFeatureEntry.Direction,
+            navController = navController,
+            navigate = navigate,
+            createVm = { _, _, component ->
+                component.profileDetailsSubcomponentFactory.create().viewModel
+            },
+            content = { ProfileDetailsScreen(it) }
+        )
     }
 
     @Composable

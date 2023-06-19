@@ -1,38 +1,65 @@
 package com.cardinalblue.navigation
 
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import com.cardinalblue.platform.serialize
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.yield
+import logcat.LogPriority
+import logcat.logcat
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface NavigationManager {
-    val backStack: SharedFlow<List<String>>
     fun navigate(directions: NavigationCommand)
+
+    val commands: SharedFlow<NavigationCommand>
+
+    fun navigateBack()
+
+    fun setResult(key: String, value: String)
+
+    val currentBackStackEntryFlow: Flow<NavBackStackEntry>
+}
+
+inline fun <reified T> NavigationManager.setResult(value: T) where T : NavOutput, T : OutputType<T> {
+    setResult(value.key, value.serialize())
 }
 
 @Singleton
 class NavigationManagerImpl @Inject constructor() : NavigationManager {
-    val commands = MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1)
-    lateinit var navController: NavController
+    private val _commands = MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1)
+    override val commands = _commands.asSharedFlow()
+    private val navControllerFlow = MutableStateFlow<NavController?>(null)
+    var navController
+        set(value) {
+            logcat("Navigation") { "Nav controller set $value" }
+            navControllerFlow.tryEmit(value)
+        }
+        get() = navControllerFlow.value
 
-    /**
-     * The lifetime of this flow is the lifetime of the application
-     * so it's safe to share it in the [GlobalScope]
-     */
-    @OptIn(DelicateCoroutinesApi::class)
-    override val backStack
-        get() = navController.currentBackStackEntryFlow
-            .map { navController.backQueue.map { it.destination.route.orEmpty() } }
-            .shareIn(GlobalScope, SharingStarted.Eagerly, replay = 1)
+    override val currentBackStackEntryFlow = navControllerFlow.filterNotNull().flatMapLatest {
+        it.currentBackStackEntryFlow
+    }
 
     override fun navigate(directions: NavigationCommand) {
-        commands.tryEmit(directions)
+        _commands.tryEmit(directions)
+    }
+
+    override fun navigateBack() {
+        navController?.popBackStack()
+    }
+
+    override fun setResult(key: String, value: String) {
+        navController?.previousBackStackEntry?.savedStateHandle?.set(key, value) ?: logcat(
+            LogPriority.ERROR
+        ) { "Something is missing" }
     }
 }
 

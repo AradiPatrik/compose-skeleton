@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
 
+    id("com.google.devtools.ksp")
+
     `android-config`
 }
 
@@ -14,8 +16,11 @@ android {
 dependencies {
     applyFeatureCommon()
     implementation(movieDetails.api())
-    implementation(libs.compose, libs.coroutines, libs.paging, libs.landscapist)
+    implementation(libs.compose, libs.coroutines, libs.paging, libs.landscapist, libs.logcat)
 
     implementation(libs.dagger)
     kapt(libs.daggerCompiler)
+
+    implementation(libs.moshi)
+    ksp(libs.moshiCompiler)
 }

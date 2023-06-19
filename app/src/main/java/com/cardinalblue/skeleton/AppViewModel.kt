@@ -7,6 +7,7 @@ import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.NavigationManager
 import com.cardinalblue.navigation.navigate
 import com.cardinalblue.profile.api.ProfileFeatureEntry
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -24,13 +25,17 @@ class AppViewModel @Inject constructor(
         None(entryPath = "")
     }
 
-    val selectedTab = navigationManager.backStack
-        .map { backStack ->
-            backStack.asReversed().firstNotNullOf { backStackEntry ->
-                enumValues<BottomSheetSelectedTab>().firstOrNull { it.entryPath == backStackEntry }
+    val selectedTab by lazy {
+        navigationManager.currentBackStackEntryFlow.map {
+            when (it.destination.route) {
+                "movie_search" -> BottomSheetSelectedTab.MovieSearch
+                "featured_movies" -> BottomSheetSelectedTab.FeaturedMovies
+                "profile" -> BottomSheetSelectedTab.Profile
+                else -> BottomSheetSelectedTab.None
             }
         }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, BottomSheetSelectedTab.MovieSearch)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, BottomSheetSelectedTab.None)
+    }
 
     fun navigateTo(selectedTab: BottomSheetSelectedTab) {
         when (selectedTab) {

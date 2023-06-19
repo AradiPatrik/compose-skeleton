@@ -21,6 +21,6 @@ import dagger.Component
     ],
     modules = [ProfileRootModule::class, ProfileSubcomponentsModule::class]
 )
-interface ProfileRootComponent : ProfileProvider {
+interface ProfileRootComponent : ProfileProvider, NavigationProvider {
     val profileDetailsSubcomponentFactory: ProfileDetailsSubcomponent.Factory
 }

@@ -70,6 +70,6 @@ fun DependencyHandler.applyDependency(configurationName: String, dependency: Any
 fun LibraryExtension.applyCompose() {
     buildFeatures.compose = true
     composeOptions {
-        kotlinCompilerExtensionVersion = versions.compose
+        kotlinCompilerExtensionVersion = versions.composeCompiler
     }
 }

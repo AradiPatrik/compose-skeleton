@@ -1,15 +1,14 @@
 package com.cardinalblue.moviesearch.api
 
-import androidx.navigation.NamedNavArgument
 import com.cardinalblue.navigation.EmptyInput
 import com.cardinalblue.navigation.FeatureEntry
-import com.cardinalblue.navigation.NavigationCommand
+import com.cardinalblue.navigation.NavDirection
 import com.cardinalblue.navigation.NavigationCommandProvider
-import com.cardinalblue.navigation.createNavigationCommandProvider
+import com.cardinalblue.navigation.createNavDirection
 
 /**
  * Define arguments and start destination for the feature.
  */
-abstract class MovieSearchFeatureEntry : FeatureEntry<EmptyInput> {
-    companion object : NavigationCommandProvider<EmptyInput> by createNavigationCommandProvider("movie_search")
+interface MovieSearchFeatureEntry : FeatureEntry<EmptyInput> {
+    companion object Direction : NavDirection<EmptyInput> by createNavDirection("movie_search")
 }
