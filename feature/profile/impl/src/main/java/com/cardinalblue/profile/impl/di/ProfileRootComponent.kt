@@ -1,11 +1,13 @@
 package com.cardinalblue.profile.impl.di
 
+import androidx.navigation.NavController
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.profile.api.ProfileProvider
 import com.cardinalblue.profile.impl.profiledetails.di.ProfileDetailsSubcomponent
 import com.cardinalblue.navigation.FeatureScoped
 import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
+import dagger.BindsInstance
 import dagger.Component
 
 /**
@@ -17,10 +19,21 @@ import dagger.Component
     dependencies = [
         DataProvider::class,
         PlatformProvider::class,
-        NavigationProvider::class,
     ],
-    modules = [ProfileRootModule::class, ProfileSubcomponentsModule::class]
+    modules = [
+        ProfileRootModule::class,
+        ProfileSubcomponentsModule::class
+    ]
 )
-interface ProfileRootComponent : ProfileProvider, NavigationProvider {
+interface ProfileRootComponent : ProfileProvider {
     val profileDetailsSubcomponentFactory: ProfileDetailsSubcomponent.Factory
+
+    @Component.Factory
+    interface Factory {
+        fun create(
+            dataProvider: DataProvider,
+            platformProvider: PlatformProvider,
+            @BindsInstance navController: NavController,
+        ): ProfileRootComponent
+    }
 }

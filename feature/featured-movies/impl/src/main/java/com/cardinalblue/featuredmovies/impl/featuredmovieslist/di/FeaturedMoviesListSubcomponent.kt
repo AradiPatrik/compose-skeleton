@@ -1,6 +1,8 @@
 package com.cardinalblue.featuredmovies.impl.featuredmovieslist.di
 
 import com.cardinalblue.featuredmovies.impl.featuredmovieslist.screen.FeaturedMoviesListScreenViewModel
+import com.cardinalblue.navigation.NavigationManagerModule
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
 
@@ -10,8 +12,13 @@ import dagger.Subcomponent
  * should be added inside the [FeaturedMoviesListSubcomponent.Factory] as parameter.
  */
 @SubfeatureScoped
-@Subcomponent(modules = [FeaturedMoviesListModule::class])
-interface FeaturedMoviesListSubcomponent {
+@Subcomponent(
+    modules = [
+        FeaturedMoviesListModule::class,
+        NavigationManagerModule::class,
+    ]
+)
+interface FeaturedMoviesListSubcomponent : NavigationProvider {
     val viewModel: FeaturedMoviesListScreenViewModel
 
     @Subcomponent.Factory

@@ -17,6 +17,8 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +39,8 @@ class MovieScreenViewModel @AssistedInject constructor(
 
     val movie = MutableStateFlow<Movie?>(null)
     val reviews = getReviews(input.movieId).cachedIn(viewModelScope)
+        .onStart { logcat("APDEBUG") { "Reviews flow started" } }
+        .onCompletion { logcat("APDEBUG") { "Reviews flow completed" } }
 
     init {
         logcat("APDEBUG") { "Details screen init $this" }
@@ -58,5 +62,10 @@ class MovieScreenViewModel @AssistedInject constructor(
         navigationManager.navigate(
             Credits.destination(MovieDetailsInput(input.movieId))
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        logcat("APDEBUG") { "Details screen cleared $this" }
     }
 }

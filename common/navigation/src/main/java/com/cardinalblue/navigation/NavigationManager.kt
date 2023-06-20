@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.yield
 import logcat.LogPriority
 import logcat.logcat
 import javax.inject.Inject
@@ -28,13 +27,25 @@ interface NavigationManager {
     val currentBackStackEntryFlow: Flow<NavBackStackEntry>
 }
 
+interface NavigationManagerFactory {
+    fun create(navController: NavController): NavigationManager
+}
+
+class NavigationManagerFactoryImpl @Inject constructor() : NavigationManagerFactory {
+    override fun create(navController: NavController): NavigationManager {
+        return NavigationManagerImpl().apply {
+            this.navController = navController
+        }
+    }
+}
+
 inline fun <reified T> NavigationManager.setResult(value: T) where T : NavOutput, T : OutputType<T> {
     setResult(value.key, value.serialize())
 }
 
 @Singleton
 class NavigationManagerImpl @Inject constructor() : NavigationManager {
-    private val _commands = MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1)
+    private val _commands = MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1, replay = 1)
     override val commands = _commands.asSharedFlow()
     private val navControllerFlow = MutableStateFlow<NavController?>(null)
     var navController
@@ -53,7 +64,7 @@ class NavigationManagerImpl @Inject constructor() : NavigationManager {
     }
 
     override fun navigateBack() {
-        navController?.popBackStack()
+        _commands.tryEmit(BackCommand)
     }
 
     override fun setResult(key: String, value: String) {
@@ -65,4 +76,8 @@ class NavigationManagerImpl @Inject constructor() : NavigationManager {
 
 fun NavigationManager.navigate(featureEntry: NavigationCommandProvider<EmptyInput>) {
     navigate(featureEntry.destination())
+}
+
+fun NavigationManager.confirm() {
+    navigate(ConfirmCommand)
 }

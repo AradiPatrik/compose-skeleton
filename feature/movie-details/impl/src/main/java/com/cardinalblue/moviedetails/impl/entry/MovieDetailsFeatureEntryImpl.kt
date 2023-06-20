@@ -16,8 +16,7 @@ import com.cardinalblue.moviedetails.impl.directions.MovieDetailsDirections
 import com.cardinalblue.moviedetails.impl.movie.screen.MovieScreen
 import com.cardinalblue.navigation.BaseFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
-import com.cardinalblue.navigation.NavigationCommand
-import com.cardinalblue.navigation.NavigationProvider
+import com.cardinalblue.navigation.ToDestinationCommand
 import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.platform.PlatformProvider
 import javax.inject.Inject
@@ -31,14 +30,15 @@ class MovieDetailsFeatureEntryImpl @Inject constructor() : BaseFeatureEntry<Movi
 ), MovieDetailsFeatureEntry {
     override fun NavGraphBuilder.buildNavigation(
         navController: NavHostController,
-        navigate: NavHostController.(NavigationCommand) -> Unit
+        navigate: NavHostController.(ToDestinationCommand) -> Unit
     ) {
         addNode(
             direction = MovieDetailsDirections.Movie,
             navController = navController,
             navigate = navigate,
+            createSubcomponent = { it.movieSubcomponentFactory.create() },
             createVm = { _, input, component ->
-                component.movieSubcomponentFactory.create().viewModelFactory.create(input)
+                component.viewModelFactory.create(input)
             },
             content = { MovieScreen(it) }
         )
@@ -47,8 +47,9 @@ class MovieDetailsFeatureEntryImpl @Inject constructor() : BaseFeatureEntry<Movi
             direction = MovieDetailsDirections.Credits,
             navController = navController,
             navigate = navigate,
+            createSubcomponent = { it.creditsSubcomponentFactory.create() },
             createVm = { _, input, component ->
-                component.creditsSubcomponentFactory.create().viewModelFactory.create(input)
+                component.viewModelFactory.create(input)
             },
             content = { CreditsScreen(it) }
         )
@@ -63,13 +64,12 @@ class MovieDetailsFeatureEntryImpl @Inject constructor() : BaseFeatureEntry<Movi
     ): MovieDetailsRootComponent {
         val currentDataProvider = CompositionLocals.current<DataProvider>()
         val currentPlatformProvider = CompositionLocals.current<PlatformProvider>()
-        val navigationProvider = CompositionLocals.current<NavigationProvider>()
         return rememberScoped(rootEntry) {
             DaggerMovieDetailsRootComponent.factory()
                 .create(
                     currentDataProvider,
                     currentPlatformProvider,
-                    navigationProvider,
+                    navController,
                 )
         }
     }

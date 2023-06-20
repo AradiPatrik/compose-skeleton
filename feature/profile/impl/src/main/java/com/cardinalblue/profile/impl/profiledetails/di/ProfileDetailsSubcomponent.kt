@@ -1,5 +1,7 @@
 package com.cardinalblue.profile.impl.profiledetails.di
 
+import com.cardinalblue.navigation.NavigationManagerModule
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.profile.impl.profiledetails.screen.ProfileDetailsScreenViewModel
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
@@ -10,8 +12,13 @@ import dagger.Subcomponent
  * should be added inside the [ProfileDetailsSubcomponent.Factory] as parameter.
  */
 @SubfeatureScoped
-@Subcomponent(modules = [ProfileDetailsModule::class])
-interface ProfileDetailsSubcomponent {
+@Subcomponent(
+    modules = [
+        ProfileDetailsModule::class,
+        NavigationManagerModule::class
+    ]
+)
+interface ProfileDetailsSubcomponent : NavigationProvider {
     val viewModel: ProfileDetailsScreenViewModel
 
     @Subcomponent.Factory

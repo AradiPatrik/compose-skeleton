@@ -1,12 +1,15 @@
 package com.cardinalblue.moviedetails.impl.di
 
+import androidx.navigation.NavController
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.moviedetails.api.MovieDetailsProvider
 import com.cardinalblue.moviedetails.impl.credits.di.CreditsSubcomponent
 import com.cardinalblue.moviedetails.impl.movie.di.MovieSubcomponent
 import com.cardinalblue.navigation.FeatureScoped
+import com.cardinalblue.navigation.NavigationManagerModule
 import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
+import dagger.BindsInstance
 import dagger.Component
 
 /**
@@ -18,14 +21,13 @@ import dagger.Component
     dependencies = [
         DataProvider::class,
         PlatformProvider::class,
-        NavigationProvider::class,
     ],
     modules = [
         MovieDetailsRootModule::class,
-        MovieDetailsSubcomponentsModule::class
+        MovieDetailsSubcomponentsModule::class,
     ]
 )
-interface MovieDetailsRootComponent : MovieDetailsProvider, NavigationProvider {
+interface MovieDetailsRootComponent : MovieDetailsProvider {
     val movieSubcomponentFactory: MovieSubcomponent.Factory
     val creditsSubcomponentFactory: CreditsSubcomponent.Factory
 
@@ -34,7 +36,7 @@ interface MovieDetailsRootComponent : MovieDetailsProvider, NavigationProvider {
         fun create(
             dataProvider: DataProvider,
             platformProvider: PlatformProvider,
-            navigationProvider: NavigationProvider,
+            @BindsInstance navController: NavController,
         ): MovieDetailsRootComponent
     }
 }

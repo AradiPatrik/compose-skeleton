@@ -23,6 +23,7 @@ import com.cardinalblue.featuredmovies.api.FeaturedMoviesFeatureEntry
 import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.FeatureEntriesProvider
+import com.cardinalblue.navigation.NavigationManager
 import com.cardinalblue.navigation.NavigationManagerImpl
 import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.injectedViewModel
@@ -57,7 +58,8 @@ class MainActivity : ComponentActivity() {
             CompositionLocals.ofType<NavigationProvider>() provides application.appProvider,
             CompositionLocals.ofType<DataProvider>() provides application.appProvider,
             CompositionLocals.ofType<PlatformProvider>() provides application.appProvider,
-            CompositionLocals.ofType<FeatureEntriesProvider>() provides application.appProvider
+            CompositionLocals.ofType<FeatureEntriesProvider>() provides application.appProvider,
+            CompositionLocals.ofType<NavigationManager>() provides getNavigationManager()
         ) {
             App(navController, appViewModel)
         }

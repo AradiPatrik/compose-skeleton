@@ -7,7 +7,7 @@ import dagger.Module
 import javax.inject.Singleton
 
 @Module
-interface NavigationManagerModule {
+interface AppNavigationManagerModule {
     @Binds
     @Singleton
     fun bindNavigationManager(impl: NavigationManagerImpl): NavigationManager

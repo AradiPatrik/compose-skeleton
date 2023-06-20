@@ -1,6 +1,8 @@
 package com.cardinalblue.impl.moviesearch.search.di
 
 import com.cardinalblue.impl.moviesearch.search.screen.SearchScreenViewModel
+import com.cardinalblue.navigation.NavigationManagerModule
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
 
@@ -10,9 +12,15 @@ import dagger.Subcomponent
  * should be added inside the [SearchSubcomponent.Factory] as parameter.
  */
 @SubfeatureScoped
-@Subcomponent(modules = [SearchModule::class])
-interface SearchSubcomponent {
+@Subcomponent(
+    modules = [
+        SearchModule::class,
+        NavigationManagerModule::class,
+    ]
+)
+interface SearchSubcomponent : NavigationProvider {
     val viewModelFactory: SearchScreenViewModel.Factory
+
     @Subcomponent.Factory
     interface Factory {
         fun create(): SearchSubcomponent

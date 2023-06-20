@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 
-interface RootComponentHolder<C : NavigationProvider> {
+interface RootComponentHolder<C> {
 
     val rootRoute: String
 

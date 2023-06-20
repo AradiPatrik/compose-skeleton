@@ -3,6 +3,7 @@ package com.cardinalblue.navigation
 import android.os.Bundle
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -24,6 +25,7 @@ import com.cardinalblue.platform.deserialize
 import com.cardinalblue.platform.serialize
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
+import logcat.logcat
 
 interface NavInput
 
@@ -46,17 +48,17 @@ interface OutputType<T : NavOutput> {
 interface FeatureEntry<I : NavInput> {
     fun NavGraphBuilder.navigation(
         navController: NavHostController,
-        navigate: NavHostController.(NavigationCommand) -> Unit
+        navigate: NavHostController.(ToDestinationCommand) -> Unit
     )
 }
 
-abstract class BaseFeatureEntry<I : NavInput, C : NavigationProvider>(
+abstract class BaseFeatureEntry<I : NavInput, C>(
     override val rootRoute: String,
     private val startRoute: String,
 ) : RootComponentHolder<C>, FeatureEntry<I> {
     override fun NavGraphBuilder.navigation(
         navController: NavHostController,
-        navigate: NavHostController.(NavigationCommand) -> Unit
+        navigate: NavHostController.(ToDestinationCommand) -> Unit
     ) {
         navigation(startDestination = startRoute, route = rootRoute) {
             buildNavigation(navController, navigate)
@@ -65,30 +67,47 @@ abstract class BaseFeatureEntry<I : NavInput, C : NavigationProvider>(
 
     abstract fun NavGraphBuilder.buildNavigation(
         navController: NavHostController,
-        navigate: NavHostController.(NavigationCommand) -> Unit
+        navigate: NavHostController.(ToDestinationCommand) -> Unit
     )
 
-    inline fun <reified T : ViewModel, reified U : InputType<V>, reified V> NavGraphBuilder.addNode(
+    @OptIn(ExperimentalAnimationApi::class)
+    inline fun <reified T : ViewModel, reified U : InputType<V>, reified V, W : NavigationProvider> NavGraphBuilder.addNode(
         direction: NavDirection<V>,
         navController: NavHostController,
-        crossinline navigate: NavHostController.(NavigationCommand) -> Unit,
-        crossinline createVm: (savedStateHandle: SavedStateHandle, input: I, component: C) -> T,
+        noinline navigate: NavHostController.(ToDestinationCommand) -> Unit,
+        crossinline createSubcomponent: (C) -> W,
+        crossinline createVm: (savedStateHandle: SavedStateHandle, input: I, component: W) -> T,
         noinline enterTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
         noinline exitTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
         crossinline content: @Composable AnimatedContentScope.(T) -> Unit
     ) where V : I {
         composable(direction, enterTransition, exitTransition) { backstackEntry ->
             val rootComponent = rootComponent(backstackEntry, navController)
-            val navCommand by rootComponent.navigationManager.commands.collectAsState(initial = null)
-            LaunchedEffect(key1 = navCommand) {
-                navCommand?.let { navController.navigate(it) }
+            val subcomponent = rememberScoped(storeOwner = backstackEntry) {
+                createSubcomponent(rootComponent)
             }
+
+            LaunchedEffect(key1 = subcomponent) {
+                logcat("Nav") { "Started listening to ${subcomponent.navigationManager}"}
+            }
+
+            ListenToNavigationManager(
+                navigationManager = subcomponent.navigationManager,
+                navigate = navigate,
+                navController = navController
+            )
+
+            ListenToNavigationManager(
+                navigationManager = CompositionLocals.current<NavigationManager>(),
+                navigate = navigate,
+                navController = navController
+            )
 
             val viewModel = injectedViewModel(backstackEntry) {
                 createVm(
                     backstackEntry.savedStateHandle,
                     backstackEntry.getInput(direction),
-                    rootComponent
+                    subcomponent
                 )
             }
 
@@ -97,25 +116,45 @@ abstract class BaseFeatureEntry<I : NavInput, C : NavigationProvider>(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimatedContentScope.ListenToNavigationManager(
+    navigationManager: NavigationManager,
+    navigate: NavHostController.(ToDestinationCommand) -> Unit,
+    navController: NavHostController,
+) {
+    val navCommand by navigationManager.commands.collectAsState(initial = null)
+    LaunchedEffect(key1 = navCommand) {
+        if (navCommand is BackCommand) {
+            if (transition.targetState != EnterExitState.PostExit) {
+                navController.popBackStack()
+                navigationManager.confirm()
+            }
+        } else if (navCommand is ToDestinationCommand) {
+            navCommand?.let { navController.navigate(it as ToDestinationCommand) }
+            navigationManager.confirm()
+        }
+    }
+}
+
 interface NavigationCommandProvider<I : NavInput> {
     val featureRoute: String
     val arguments: List<NamedNavArgument>
-    fun destination(input: I): NavigationCommand
+    fun destination(input: I): ToDestinationCommand
 }
 
-fun NavigationCommandProvider<EmptyInput>.destination(): NavigationCommand = destination(EmptyInput)
+fun NavigationCommandProvider<EmptyInput>.destination(): ToDestinationCommand = destination(EmptyInput)
 
 fun NavGraphBuilder.addFeatureEntry(
     navController: NavHostController,
     featureEntry: FeatureEntry<*>,
-    navigate: NavHostController.(NavigationCommand) -> Unit
+    navigate: NavHostController.(ToDestinationCommand) -> Unit
 ) {
     with(featureEntry) {
         navigation(navController, navigate)
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.composable(
     navigationCommandProvider: NavigationCommandProvider<*>,
     enterTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
@@ -178,8 +217,8 @@ inline fun <reified T : NavInput> createNavDirection(
         )
     }
 
-    override fun destination(input: T): NavigationCommand =
-        object : NavigationCommand {
+    override fun destination(input: T): ToDestinationCommand =
+        object : ToDestinationCommand {
             override val args = arguments
             override val destinationFeatureRoute: String = featureRoute
             override val destination: String =

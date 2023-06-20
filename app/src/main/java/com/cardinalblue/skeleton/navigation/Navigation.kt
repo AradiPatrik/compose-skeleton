@@ -18,7 +18,7 @@ import com.cardinalblue.moviedetails.api.MovieDetailsFeatureEntry
 import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.FeatureEntriesProvider
-import com.cardinalblue.navigation.NavigationCommand
+import com.cardinalblue.navigation.ToDestinationCommand
 import com.cardinalblue.navigation.addFeatureEntry
 import com.cardinalblue.navigation.find
 import com.cardinalblue.profile.api.ProfileFeatureEntry
@@ -50,7 +50,7 @@ fun NavGraph(paddingValues: PaddingValues, navController: NavController) {
         )
     }
 
-    val navigate: NavHostController.(command: NavigationCommand) -> Unit  = { command ->
+    val navigate: NavHostController.(command: ToDestinationCommand) -> Unit  = { command ->
         val navOptions = if (command.destination in routeDestinations) {
             NavOptions.Builder()
                 .setPopUpTo(

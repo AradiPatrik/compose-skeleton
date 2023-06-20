@@ -1,6 +1,8 @@
 package com.cardinalblue.moviedetails.impl.credits.di
 
 import com.cardinalblue.moviedetails.impl.credits.screen.CreditsScreenViewModel
+import com.cardinalblue.navigation.NavigationManagerModule
+import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
 
@@ -8,9 +10,10 @@ import dagger.Subcomponent
 @Subcomponent(
     modules = [
         CreditsModule::class,
+        NavigationManagerModule::class,
     ]
 )
-interface CreditsSubcomponent {
+interface CreditsSubcomponent : NavigationProvider {
     val viewModelFactory: CreditsScreenViewModel.Factory
 
     @Subcomponent.Factory

@@ -56,6 +56,7 @@ class SearchScreenViewModel @AssistedInject constructor(
         _query.value = Query.Typing("Spiderman")
         savedStateHandle.getOutputFlow(MovieDetailsOutput)
             .onEach {
+                logcat("APDEBUG") { "Navigating with $navigationManager"}
                 navigationManager.navigate(FeaturedMoviesFeatureEntry.destination())
             }
             .launchIn(viewModelScope)

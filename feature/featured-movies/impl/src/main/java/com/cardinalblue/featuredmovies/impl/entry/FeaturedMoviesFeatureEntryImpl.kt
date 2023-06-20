@@ -6,8 +6,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.featuredmovies.api.FeaturedMoviesFeatureEntry
 import com.cardinalblue.featuredmovies.impl.di.DaggerFeaturedMoviesRootComponent
@@ -16,10 +14,7 @@ import com.cardinalblue.featuredmovies.impl.featuredmovieslist.screen.FeaturedMo
 import com.cardinalblue.navigation.BaseFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.EmptyInput
-import com.cardinalblue.navigation.NavigationCommand
-import com.cardinalblue.navigation.NavigationProvider
-import com.cardinalblue.navigation.RootComponentHolder
-import com.cardinalblue.navigation.injectedViewModel
+import com.cardinalblue.navigation.ToDestinationCommand
 import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.platform.PlatformProvider
 import javax.inject.Inject
@@ -33,13 +28,14 @@ class FeaturedMoviesFeatureEntryImpl @Inject constructor() : BaseFeatureEntry<Em
 ), FeaturedMoviesFeatureEntry {
     override fun NavGraphBuilder.buildNavigation(
         navController: NavHostController,
-        navigate: NavHostController.(NavigationCommand) -> Unit
+        navigate: NavHostController.(ToDestinationCommand) -> Unit
     ) {
         addNode(
             direction = FeaturedMoviesFeatureEntry.Direction,
             navController = navController,
             navigate = navigate,
-            createVm = { _, _, component -> component.featuredMoviesListSubcomponentFactory.create().viewModel },
+            createSubcomponent = { it.featuredMoviesListSubcomponentFactory.create() },
+            createVm = { _, _, component -> component.viewModel },
             content = { FeaturedMoviesListScreen(it) }
         )
     }
@@ -52,13 +48,12 @@ class FeaturedMoviesFeatureEntryImpl @Inject constructor() : BaseFeatureEntry<Em
     ): FeaturedMoviesRootComponent {
         val currentDataProvider = CompositionLocals.current<DataProvider>()
         val currentPlatformProvider = CompositionLocals.current<PlatformProvider>()
-        val navigationProvider = CompositionLocals.current<NavigationProvider>()
         return rememberScoped(rootEntry) {
-            DaggerFeaturedMoviesRootComponent.builder()
-                .dataProvider(currentDataProvider)
-                .platformProvider(currentPlatformProvider)
-                .navigationProvider(navigationProvider)
-                .build()
+            DaggerFeaturedMoviesRootComponent.factory().create(
+                dataProvider = currentDataProvider,
+                platformProvider = currentPlatformProvider,
+                navController = navController,
+            )
         }
     }
 }
