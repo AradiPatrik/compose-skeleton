@@ -2,14 +2,14 @@
 
 object versions {
     const val ksp = "1.8.21-1.0.11"
-    const val versionPlugin = "0.46.0"
-    const val core = "1.9.0"
+    const val versionPlugin = "0.47.0"
+    const val core = "1.10.1"
     const val lifecycle = "2.6.1"
     const val coroutines = "1.7.1"
     const val composeCompiler = "1.4.7"
     const val dagger = "2.46.1"
     const val paging = "3.2.0-beta01"
-    const val pagingCompose = "1.0.0-alpha18"
+    const val pagingCompose = "3.2.0-beta01"
     const val accompanist = "0.25.1"
     const val retrofit = "2.9.0"
     const val moshi = "1.15.0"
@@ -18,7 +18,7 @@ object versions {
     const val activityCompose = "1.7.2"
     const val navigationCompose = "2.7.0-beta01"
     const val composeBom = "2023.06.00"
-    const val landscapist = "2.2.1"
+    const val landscapist = "2.2.2"
     const val logcat = "0.1"
 }
 
