@@ -27,37 +27,17 @@ interface NavigationManager {
     val currentBackStackEntryFlow: Flow<NavBackStackEntry>
 }
 
-interface NavigationManagerFactory {
-    fun create(navController: NavController): NavigationManager
-}
-
-class NavigationManagerFactoryImpl @Inject constructor() : NavigationManagerFactory {
-    override fun create(navController: NavController): NavigationManager {
-        return NavigationManagerImpl().apply {
-            this.navController = navController
-        }
-    }
-}
-
 inline fun <reified T> NavigationManager.setResult(value: T) where T : NavOutput, T : OutputType<T> {
     setResult(value.key, value.serialize())
 }
 
-@Singleton
-class NavigationManagerImpl @Inject constructor() : NavigationManager {
-    private val _commands = MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1, replay = 1)
+class NavigationManagerImpl @Inject constructor(private val navController: NavController) :
+    NavigationManager {
+    private val _commands =
+        MutableSharedFlow<NavigationCommand>(extraBufferCapacity = 1, replay = 1)
     override val commands = _commands.asSharedFlow()
-    private val navControllerFlow = MutableStateFlow<NavController?>(null)
-    var navController
-        set(value) {
-            logcat("Navigation") { "Nav controller set $value" }
-            navControllerFlow.tryEmit(value)
-        }
-        get() = navControllerFlow.value
 
-    override val currentBackStackEntryFlow = navControllerFlow.filterNotNull().flatMapLatest {
-        it.currentBackStackEntryFlow
-    }
+    override val currentBackStackEntryFlow = navController.currentBackStackEntryFlow
 
     override fun navigate(directions: NavigationCommand) {
         _commands.tryEmit(directions)
@@ -68,7 +48,7 @@ class NavigationManagerImpl @Inject constructor() : NavigationManager {
     }
 
     override fun setResult(key: String, value: String) {
-        navController?.previousBackStackEntry?.savedStateHandle?.set(key, value) ?: logcat(
+        navController.previousBackStackEntry?.savedStateHandle?.set(key, value) ?: logcat(
             LogPriority.ERROR
         ) { "Something is missing" }
     }

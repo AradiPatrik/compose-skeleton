@@ -7,12 +7,7 @@ plugins {
 
 android {
     namespace = "com.cardinalblue.theme"
-
-    // ===== compose =====
-    buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = versions.composeCompiler
-    }
+    applyCompose()
 }
 
 dependencies {

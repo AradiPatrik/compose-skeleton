@@ -70,7 +70,6 @@ abstract class BaseFeatureEntry<I : NavInput, C>(
         navigate: NavHostController.(ToDestinationCommand) -> Unit
     )
 
-    @OptIn(ExperimentalAnimationApi::class)
     inline fun <reified T : ViewModel, reified U : InputType<V>, reified V, W : NavigationProvider> NavGraphBuilder.addNode(
         direction: NavDirection<V>,
         navController: NavHostController,

@@ -26,14 +26,15 @@ class AppViewModel @Inject constructor(
     }
 
     val selectedTab by lazy {
-        navigationManager.currentBackStackEntryFlow.map {
-            when (it.destination.route) {
-                "movie_search" -> BottomSheetSelectedTab.MovieSearch
-                "featured_movies" -> BottomSheetSelectedTab.FeaturedMovies
-                "profile" -> BottomSheetSelectedTab.Profile
-                else -> BottomSheetSelectedTab.None
+        navigationManager.currentBackStackEntryFlow
+            .map {
+                when (it.destination.route) {
+                    "movie_search" -> BottomSheetSelectedTab.MovieSearch
+                    "featured_movies" -> BottomSheetSelectedTab.FeaturedMovies
+                    "profile" -> BottomSheetSelectedTab.Profile
+                    else -> BottomSheetSelectedTab.None
+                }
             }
-        }
             .stateIn(viewModelScope, SharingStarted.Eagerly, BottomSheetSelectedTab.None)
     }
 

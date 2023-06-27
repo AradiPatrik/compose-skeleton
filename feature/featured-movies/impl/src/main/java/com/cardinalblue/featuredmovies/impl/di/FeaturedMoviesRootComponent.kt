@@ -5,8 +5,6 @@ import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.featuredmovies.api.FeaturedMoviesProvider
 import com.cardinalblue.featuredmovies.impl.featuredmovieslist.di.FeaturedMoviesListSubcomponent
 import com.cardinalblue.navigation.FeatureScoped
-import com.cardinalblue.navigation.NavigationManagerModule
-import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
 import dagger.BindsInstance
 import dagger.Component

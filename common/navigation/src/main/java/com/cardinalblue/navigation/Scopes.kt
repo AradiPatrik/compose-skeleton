@@ -9,3 +9,7 @@ annotation class FeatureScoped
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
 annotation class SubfeatureScoped
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class CompositionScoped

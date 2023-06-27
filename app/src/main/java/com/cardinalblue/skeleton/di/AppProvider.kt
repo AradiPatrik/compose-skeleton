@@ -6,6 +6,6 @@ import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
 import com.cardinalblue.skeleton.AppViewModel
 
-interface AppProvider : PlatformProvider, DataProvider, FeatureEntriesProvider, NavigationProvider {
-    val appViewModel: AppViewModel
+interface AppProvider : PlatformProvider, DataProvider, FeatureEntriesProvider {
+    val navigationSubcomponentFactory: NavigationSubcomponent.Factory
 }

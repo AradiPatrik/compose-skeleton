@@ -20,6 +20,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -46,7 +47,10 @@ private fun MovieDbBottomAppBar(
 ) {
     val offset by animateDpAsState(targetValue = if (selectedTab != None) 0.dp else 80.dp, tween(700, 700))
     val height by animateDpAsState(targetValue = if (selectedTab != None) 80.dp else 0.dp, tween(700, 700))
-    Box(modifier = Modifier.fillMaxWidth().height(height).offset(y = offset)) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(height)
+        .offset(y = offset)) {
         NavigationBar {
             NavigationBarItem(
                 selected = selectedTab == MovieSearch,

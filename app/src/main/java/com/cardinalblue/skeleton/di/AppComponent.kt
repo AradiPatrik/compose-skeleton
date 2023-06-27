@@ -13,7 +13,7 @@ import javax.inject.Singleton
     ],
     modules = [
         NavigationEntryModule::class,
-        AppNavigationManagerModule::class,
+        NavigationSubcomponentModule::class
     ]
 )
 interface AppComponent : AppProvider

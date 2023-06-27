@@ -11,7 +11,6 @@ android {
 }
 
 dependencies {
-    implementation(domain())
     implementation(libs.coroutines)
 
     implementation(libs.dagger)
