@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     kotlin("kapt")
+    id("com.google.devtools.ksp")
 
     `android-config`
 }
@@ -16,6 +17,6 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.daggerCompiler)
 
-    kapt(libs.moshiCompiler)
     implementation(libs.moshi)
+    ksp(libs.moshiCompiler)
 }
