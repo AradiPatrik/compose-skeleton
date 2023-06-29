@@ -4,18 +4,17 @@ import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import com.cardinalblue.data.api.DataProvider
 import com.cardinalblue.navigation.BaseFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.EmptyInput
-import com.cardinalblue.navigation.ToDestinationCommand
+import com.cardinalblue.navigation.FeatureGraphBuilderScope
 import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.platform.PlatformProvider
 import com.cardinalblue.profile.api.ProfileFeatureEntry
 import com.cardinalblue.profile.impl.di.DaggerProfileRootComponent
 import com.cardinalblue.profile.impl.di.ProfileRootComponent
+import com.cardinalblue.profile.impl.profiledetails.di.ProfileDetailsSubcomponent
 import com.cardinalblue.profile.impl.profiledetails.screen.ProfileDetailsScreen
 import javax.inject.Inject
 
@@ -27,16 +26,11 @@ class ProfileFeatureEntryImpl @Inject constructor() :
         rootRoute = "@profile",
         ProfileFeatureEntry.featureRoute
     ), ProfileFeatureEntry {
-    override fun NavGraphBuilder.buildNavigation(
-        navController: NavHostController,
-        navigate: NavHostController.(ToDestinationCommand) -> Unit
-    ) {
+    override fun FeatureGraphBuilderScope.buildNavigation() {
         addNode(
             direction = ProfileFeatureEntry.Direction,
-            navController = navController,
-            navigate = navigate,
-            createSubcomponent = { it.profileDetailsSubcomponentFactory.create() },
-            createVm = { _, _, component -> component.viewModel },
+            subcomponentFactory = ProfileRootComponent::profileDetailsSubcomponentFactory,
+            viewModelFactory = ProfileDetailsSubcomponent::viewModelFactory,
             content = { ProfileDetailsScreen(it) }
         )
     }

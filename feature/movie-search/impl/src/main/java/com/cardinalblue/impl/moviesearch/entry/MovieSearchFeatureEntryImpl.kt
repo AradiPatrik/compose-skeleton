@@ -4,17 +4,16 @@ import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import com.cardinalblue.data.api.DataProvider
-import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.impl.moviesearch.di.DaggerMovieSearchRootComponent
 import com.cardinalblue.impl.moviesearch.di.MovieSearchRootComponent
+import com.cardinalblue.impl.moviesearch.search.di.SearchSubcomponent
 import com.cardinalblue.impl.moviesearch.search.screen.SearchScreen
+import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.BaseFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.EmptyInput
-import com.cardinalblue.navigation.ToDestinationCommand
+import com.cardinalblue.navigation.FeatureGraphBuilderScope
 import com.cardinalblue.navigation.rememberScoped
 import com.cardinalblue.platform.PlatformProvider
 import javax.inject.Inject
@@ -28,18 +27,11 @@ class MovieSearchFeatureEntryImpl @Inject constructor() :
         startRoute = MovieSearchFeatureEntry.featureRoute
     ), MovieSearchFeatureEntry {
 
-    override fun NavGraphBuilder.buildNavigation(
-        navController: NavHostController,
-        navigate: NavHostController.(ToDestinationCommand) -> Unit
-    ) {
+    override fun FeatureGraphBuilderScope.buildNavigation() {
         addNode(
             direction = MovieSearchFeatureEntry.Direction,
-            navController = navController,
-            navigate = navigate,
-            createSubcomponent = { it.searchSubcomponentFactory.create() },
-            createVm = { savedStateHandle, _, component ->
-                component.viewModelFactory.create(savedStateHandle)
-            },
+            subcomponentFactory = MovieSearchRootComponent::searchSubcomponentFactory,
+            viewModelFactory = SearchSubcomponent::viewModelFactory,
             content = { SearchScreen(it) }
         )
     }

@@ -2,6 +2,7 @@ package com.cardinalblue.profile.impl.profiledetails.di
 
 import com.cardinalblue.navigation.NavigationManagerModule
 import com.cardinalblue.navigation.NavigationProvider
+import com.cardinalblue.navigation.SubfeatureSubcomponentFactory
 import com.cardinalblue.profile.impl.profiledetails.screen.ProfileDetailsScreenViewModel
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
@@ -19,10 +20,8 @@ import dagger.Subcomponent
     ]
 )
 interface ProfileDetailsSubcomponent : NavigationProvider {
-    val viewModel: ProfileDetailsScreenViewModel
+    val viewModelFactory: ProfileDetailsScreenViewModel.Factory
 
     @Subcomponent.Factory
-    interface Factory {
-        fun create(): ProfileDetailsSubcomponent
-    }
+    interface Factory : SubfeatureSubcomponentFactory<ProfileDetailsSubcomponent>
 }

@@ -3,6 +3,7 @@ package com.cardinalblue.impl.moviesearch.search.di
 import com.cardinalblue.impl.moviesearch.search.screen.SearchScreenViewModel
 import com.cardinalblue.navigation.NavigationManagerModule
 import com.cardinalblue.navigation.NavigationProvider
+import com.cardinalblue.navigation.SubfeatureSubcomponentFactory
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
 
@@ -22,7 +23,5 @@ interface SearchSubcomponent : NavigationProvider {
     val viewModelFactory: SearchScreenViewModel.Factory
 
     @Subcomponent.Factory
-    interface Factory {
-        fun create(): SearchSubcomponent
-    }
+    interface Factory : SubfeatureSubcomponentFactory<SearchSubcomponent>
 }

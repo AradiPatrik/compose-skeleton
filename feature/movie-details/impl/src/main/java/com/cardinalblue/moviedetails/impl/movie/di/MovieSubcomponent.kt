@@ -4,6 +4,7 @@ import com.cardinalblue.moviedetails.impl.common.reviews.di.ReviewsModule
 import com.cardinalblue.moviedetails.impl.movie.screen.MovieScreenViewModel
 import com.cardinalblue.navigation.NavigationManagerModule
 import com.cardinalblue.navigation.NavigationProvider
+import com.cardinalblue.navigation.SubfeatureSubcomponentFactory
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
 
@@ -24,7 +25,5 @@ interface MovieSubcomponent : NavigationProvider {
     val viewModelFactory: MovieScreenViewModel.Factory
 
     @Subcomponent.Factory
-    interface Factory {
-        fun create(): MovieSubcomponent
-    }
+    interface Factory : SubfeatureSubcomponentFactory<MovieSubcomponent>
 }

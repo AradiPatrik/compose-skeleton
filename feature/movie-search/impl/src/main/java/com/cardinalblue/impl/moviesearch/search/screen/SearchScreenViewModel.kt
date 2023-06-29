@@ -11,29 +11,32 @@ import com.cardinalblue.impl.moviesearch.search.usecase.SearchMovies
 import com.cardinalblue.moviedetails.api.MovieDetailsFeatureEntry
 import com.cardinalblue.moviedetails.api.MovieDetailsInput
 import com.cardinalblue.moviedetails.api.MovieDetailsOutput
+import com.cardinalblue.navigation.AssistedViewModelFactory
+import com.cardinalblue.navigation.EmptyInput
 import com.cardinalblue.navigation.NavigationManager
 import com.cardinalblue.navigation.destination
 import com.cardinalblue.navigation.getOutputFlow
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import logcat.logcat
-import javax.inject.Inject
 
 class SearchScreenViewModel @AssistedInject constructor(
     private val searchMovies: SearchMovies,
     private val navigationManager: NavigationManager,
     @Assisted private val savedStateHandle: SavedStateHandle,
+    @Assisted private val emptyInput: EmptyInput
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory : AssistedViewModelFactory<EmptyInput, SearchScreenViewModel>
+
     sealed interface Query {
         val query: String
 
@@ -46,11 +49,6 @@ class SearchScreenViewModel @AssistedInject constructor(
 
     private val _query = MutableStateFlow<Query>(Query.ForceRefresh(""))
     val query = _query.asStateFlow()
-
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): SearchScreenViewModel
-    }
 
     init {
         _query.value = Query.Typing("Spiderman")
@@ -69,10 +67,6 @@ class SearchScreenViewModel @AssistedInject constructor(
 
     fun onQueryChange(newSearchQuery: String) {
         _query.value = Query.Typing(newSearchQuery)
-    }
-
-    fun refresh() {
-        _query.value = Query.ForceRefresh(query.value.query)
     }
 
     fun onMovieClick(movieId: Int) {

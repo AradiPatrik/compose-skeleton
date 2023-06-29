@@ -6,8 +6,6 @@ import com.cardinalblue.moviedetails.api.MovieDetailsProvider
 import com.cardinalblue.moviedetails.impl.credits.di.CreditsSubcomponent
 import com.cardinalblue.moviedetails.impl.movie.di.MovieSubcomponent
 import com.cardinalblue.navigation.FeatureScoped
-import com.cardinalblue.navigation.NavigationManagerModule
-import com.cardinalblue.navigation.NavigationProvider
 import com.cardinalblue.platform.PlatformProvider
 import dagger.BindsInstance
 import dagger.Component

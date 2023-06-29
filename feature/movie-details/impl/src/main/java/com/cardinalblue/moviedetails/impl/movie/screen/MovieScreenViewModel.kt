@@ -1,5 +1,6 @@
 package com.cardinalblue.moviedetails.impl.movie.screen
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -9,6 +10,7 @@ import com.cardinalblue.moviedetails.api.MovieDetailsOutput
 import com.cardinalblue.moviedetails.impl.common.reviews.usecase.GetReviews
 import com.cardinalblue.moviedetails.impl.directions.MovieDetailsDirections.Credits
 import com.cardinalblue.moviedetails.impl.movie.usecase.GetMovie
+import com.cardinalblue.navigation.AssistedViewModelFactory
 import com.cardinalblue.navigation.NavigationManager
 import com.cardinalblue.navigation.setResult
 import dagger.assisted.Assisted
@@ -28,14 +30,13 @@ import java.util.UUID
 
 class MovieScreenViewModel @AssistedInject constructor(
     private val getMovie: GetMovie,
-    private val getReviews: GetReviews,
+    getReviews: GetReviews,
     @Assisted private val input: MovieDetailsInput,
+    @Assisted private val savedStateHandle: SavedStateHandle,
     private val navigationManager: NavigationManager,
 ) : ViewModel() {
     @AssistedFactory
-    interface Factory {
-        fun create(input: MovieDetailsInput): MovieScreenViewModel
-    }
+    interface Factory : AssistedViewModelFactory<MovieDetailsInput, MovieScreenViewModel>
 
     val movie = MutableStateFlow<Movie?>(null)
     val reviews = getReviews(input.movieId).cachedIn(viewModelScope)

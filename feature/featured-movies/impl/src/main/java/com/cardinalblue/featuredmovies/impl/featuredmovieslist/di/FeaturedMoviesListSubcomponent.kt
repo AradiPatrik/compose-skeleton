@@ -3,6 +3,7 @@ package com.cardinalblue.featuredmovies.impl.featuredmovieslist.di
 import com.cardinalblue.featuredmovies.impl.featuredmovieslist.screen.FeaturedMoviesListScreenViewModel
 import com.cardinalblue.navigation.NavigationManagerModule
 import com.cardinalblue.navigation.NavigationProvider
+import com.cardinalblue.navigation.SubfeatureSubcomponentFactory
 import com.cardinalblue.navigation.SubfeatureScoped
 import dagger.Subcomponent
 
@@ -19,10 +20,8 @@ import dagger.Subcomponent
     ]
 )
 interface FeaturedMoviesListSubcomponent : NavigationProvider {
-    val viewModel: FeaturedMoviesListScreenViewModel
+    val viewModelFactory: FeaturedMoviesListScreenViewModel.Factory
 
     @Subcomponent.Factory
-    interface Factory {
-        fun create(): FeaturedMoviesListSubcomponent
-    }
+    interface Factory : SubfeatureSubcomponentFactory<FeaturedMoviesListSubcomponent>
 }
