@@ -40,22 +40,11 @@ class MovieScreenViewModel @AssistedInject constructor(
 
     val movie = MutableStateFlow<Movie?>(null)
     val reviews = getReviews(input.movieId).cachedIn(viewModelScope)
-        .onStart { logcat("APDEBUG") { "Reviews flow started" } }
-        .onCompletion { logcat("APDEBUG") { "Reviews flow completed" } }
 
     init {
         logcat("APDEBUG") { "Details screen init $this" }
         viewModelScope.launch {
             movie.value = getMovie(input.movieId)
-            withContext(Dispatchers.IO) {
-                delay(2000)
-            }
-            logcat("APDEBUG") { "View model scope: ${viewModelScope.isActive}"}
-            yield()
-            navigationManager.setResult(MovieDetailsOutput(UUID.randomUUID().toString()))
-            logcat("APDEBUG") { "View model scope: ${viewModelScope.isActive}"}
-            yield()
-            navigationManager.navigateBack()
         }
     }
 
@@ -63,10 +52,5 @@ class MovieScreenViewModel @AssistedInject constructor(
         navigationManager.navigate(
             Credits.destination(MovieDetailsInput(input.movieId))
         )
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        logcat("APDEBUG") { "Details screen cleared $this" }
     }
 }

@@ -7,22 +7,19 @@ import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.NavigationManager
 import com.cardinalblue.navigation.navigate
 import com.cardinalblue.profile.api.ProfileFeatureEntry
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import logcat.logcat
 import javax.inject.Inject
 
 class AppViewModel @Inject constructor(
     private val navigationManager: NavigationManager
 ) : ViewModel() {
-    enum class BottomSheetSelectedTab(val entryPath: String) {
-        MovieSearch(MovieSearchFeatureEntry.featureRoute),
-        FeaturedMovies(FeaturedMoviesFeatureEntry.featureRoute),
-        Profile(ProfileFeatureEntry.featureRoute),
-        None(entryPath = "")
+    enum class BottomSheetSelectedTab {
+        MovieSearch,
+        FeaturedMovies,
+        Profile,
+        None
     }
 
     val selectedTab by lazy {

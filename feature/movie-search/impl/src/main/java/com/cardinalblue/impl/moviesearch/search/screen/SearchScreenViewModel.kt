@@ -32,7 +32,7 @@ class SearchScreenViewModel @AssistedInject constructor(
     private val searchMovies: SearchMovies,
     private val navigationManager: NavigationManager,
     @Assisted private val savedStateHandle: SavedStateHandle,
-    @Assisted private val emptyInput: EmptyInput
+    @Assisted private val input: EmptyInput
 ) : ViewModel() {
     @AssistedFactory
     interface Factory : AssistedViewModelFactory<EmptyInput, SearchScreenViewModel>
@@ -54,7 +54,6 @@ class SearchScreenViewModel @AssistedInject constructor(
         _query.value = Query.Typing("Spiderman")
         savedStateHandle.getOutputFlow(MovieDetailsOutput)
             .onEach {
-                logcat("APDEBUG") { "Navigating with $navigationManager"}
                 navigationManager.navigate(FeaturedMoviesFeatureEntry.destination())
             }
             .launchIn(viewModelScope)
@@ -71,7 +70,9 @@ class SearchScreenViewModel @AssistedInject constructor(
 
     fun onMovieClick(movieId: Int) {
         navigationManager.navigate(
-            MovieDetailsFeatureEntry.destination(MovieDetailsInput(movieId))
+            MovieDetailsFeatureEntry.destination(
+                MovieDetailsInput(movieId)
+            )
         )
     }
 }

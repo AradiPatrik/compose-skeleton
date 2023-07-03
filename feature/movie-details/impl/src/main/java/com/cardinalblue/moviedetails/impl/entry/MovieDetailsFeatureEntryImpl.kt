@@ -24,7 +24,8 @@ import javax.inject.Inject
 /**
  * The entry point for the feature. Provides root component and navigation graph for the feature.
  */
-class MovieDetailsFeatureEntryImpl @Inject constructor() : BaseFeatureEntry<MovieDetailsInput, MovieDetailsRootComponent>(
+class MovieDetailsFeatureEntryImpl @Inject constructor()
+    : BaseFeatureEntry<MovieDetailsInput, MovieDetailsRootComponent>(
     rootRoute = "@movie-details",
     startRoute = MovieDetailsFeatureEntry.featureRoute
 ), MovieDetailsFeatureEntry {
