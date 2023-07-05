@@ -1,6 +1,5 @@
 package com.cardinalblue.moviedetails.api
 
-import android.icu.util.Output
 import com.cardinalblue.navigation.FeatureEntry
 import com.cardinalblue.navigation.InputType
 import com.cardinalblue.navigation.NavDirection
@@ -16,13 +15,6 @@ import com.squareup.moshi.JsonClass
 /**
  * Define arguments and start destination for the feature.
  */
-interface MovieDetailsFeatureEntry : FeatureEntry<MovieDetailsInput> {
-    companion object : NavDirection<MovieDetailsInput> by createNavDirection(
-        "movieDetails",
-        inputType = MovieDetailsInput
-    )
-}
-
 @JsonClass(generateAdapter = true)
 data class MovieDetailsInput(val movieId: Int) : NavInput {
     companion object : InputType<MovieDetailsInput> by createInputType("movieId")
@@ -32,4 +24,11 @@ data class MovieDetailsInput(val movieId: Int) : NavInput {
 data class MovieDetailsOutput(val mock: String) : NavOutput,
     OutputType<MovieDetailsOutput> by Companion {
     companion object : OutputType<MovieDetailsOutput> by createOutputType("mock")
+}
+
+interface MovieDetailsFeatureEntry : FeatureEntry<MovieDetailsInput> {
+    companion object : NavDirection<MovieDetailsInput> by createNavDirection(
+        "movieDetails",
+        inputType = MovieDetailsInput
+    )
 }
