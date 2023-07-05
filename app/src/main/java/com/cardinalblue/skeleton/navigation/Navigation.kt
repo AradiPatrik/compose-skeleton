@@ -18,6 +18,7 @@ import com.cardinalblue.moviedetails.api.MovieDetailsFeatureEntry
 import com.cardinalblue.moviesearch.api.MovieSearchFeatureEntry
 import com.cardinalblue.navigation.CompositionLocals
 import com.cardinalblue.navigation.FeatureEntriesProvider
+import com.cardinalblue.navigation.NavigationEvent
 import com.cardinalblue.navigation.ToDestinationCommand
 import com.cardinalblue.navigation.addFeatureEntry
 import com.cardinalblue.navigation.find
@@ -50,21 +51,24 @@ fun NavGraph(paddingValues: PaddingValues, navController: NavController) {
         )
     }
 
-    val navigate: NavHostController.(command: ToDestinationCommand) -> Unit  = { command ->
-        val navOptions = if (command.destination in routeDestinations) {
-            NavOptions.Builder()
-                .setPopUpTo(
-                    destinationId = navController.graph.findStartDestination().id,
-                    inclusive = false,
-                    saveState = true
-                )
-                .setLaunchSingleTop(true)
-                .setRestoreState(true)
-                .build()
-        } else {
-            null
+    val navigate: NavHostController.(command: NavigationEvent) -> Unit  = { event ->
+        val command = event.command
+        if (command is ToDestinationCommand) {
+            val navOptions = if (command.destination in routeDestinations) {
+                NavOptions.Builder()
+                    .setPopUpTo(
+                        destinationId = navController.graph.findStartDestination().id,
+                        inclusive = false,
+                        saveState = true
+                    )
+                    .setLaunchSingleTop(true)
+                    .setRestoreState(true)
+                    .build()
+            } else {
+                null
+            }
+            navController.navigate(command.destination, navOptions = navOptions)
         }
-        navController.navigate(command.destination, navOptions = navOptions)
     }
 
     Box(
