@@ -1,9 +1,0 @@
-[submodule "buildSrc"]
-	path = buildSrc
-	url = git@github.com:cardinalblue/android-explore-buildsrc.git
-[submodule "core/platform"]
-	path = core/platform
-	url = git@github.com:cardinalblue/android-core-platform.git
-[submodule "core/navigation"]
-	path = core/navigation
-	url = git@github.com:cardinalblue/android-core-navigation.git

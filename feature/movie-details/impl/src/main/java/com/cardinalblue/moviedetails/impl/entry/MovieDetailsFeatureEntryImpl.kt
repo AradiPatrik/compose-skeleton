@@ -45,7 +45,6 @@ class MovieDetailsFeatureEntryImpl @Inject constructor()
         )
     }
 
-
     @Composable
     override fun provideRootComponent(
         rootEntry: NavBackStackEntry,

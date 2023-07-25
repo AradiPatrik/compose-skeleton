@@ -17,9 +17,11 @@ class SkeletonApplication : Application() {
         super.onCreate()
 
         val platformProvider = DaggerPlatformComponent.factory().create(this)
+        val dataProvider = DaggerDataComponent.builder().platformProvider(platformProvider).build()
+
         appProvider = DaggerAppComponent.builder()
             .platformProvider(platformProvider)
-            .dataProvider(DaggerDataComponent.builder().platformProvider(platformProvider).build())
+            .dataProvider(dataProvider)
             .build()
 
         AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = VERBOSE)

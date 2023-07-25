@@ -2,6 +2,7 @@ package com.cardinalblue.data.di
 
 import android.content.Context
 import com.cardinalblue.data.storage.db.AppDatabase
+import com.cardinalblue.platform.ApplicationContext
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -10,5 +11,5 @@ import javax.inject.Singleton
 class StorageModule {
     @Provides
     @Singleton
-    fun provideDatabase(context: Context): AppDatabase = AppDatabase.getInstance(context)
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase = AppDatabase.getInstance(context)
 }
